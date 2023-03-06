@@ -8,7 +8,7 @@
 }
 
 #map{
-    height: 87vh; 
+    height: 87.5vh; 
    width: 70vw;
 }
 
@@ -35,8 +35,8 @@ aside{
 }
 
 .todo{
-    width: 355px;
-    height: 700px;
+    width: 22rem;
+    height: 43rem;
     background-color: white;
     border-radius: 30px;
 }
@@ -177,4 +177,8 @@ aside h3{
 
 .dark-theme .title{
     color: white;
+}
+
+.dark-theme #map{
+    filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
 }
