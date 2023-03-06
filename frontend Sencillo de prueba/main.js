@@ -20,12 +20,12 @@ const getSensors = async () => {
     json.forEach(s => {
         let marker = L.marker(s.coords)
         marker.addTo(map);
-        marker.on("click", ()=>{updateData(s.name, s.co2)})
-        marker.bindPopup(`<b>${s.name}</b>
-        <ul>
-        <li>CO2: ${s.co2}</li>
-        </ul>
-        `)
+        
+        marker.on("click", ()=>{
+            updateData(s.name, s.co2)
+        
+        })
+       
 
         arrayMarkers.push(marker)
     });
