@@ -28,6 +28,35 @@ router.post("/sensor", (req,res)=>{
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
 })
+// put sensor
+router.put("/sensor/:id", (req,res)=>{
+    let {id} = req.params
+    const {name, coords, co2} = sensorSchema(req.body)
+
+    if (coords.length != 0){
+        sensorSchema
+        .updateOne({_id:id}, {$set :{name, coords, co2}})
+        .then((data)=> res.json(data))
+        .catch((error)=> res.json({"message": error}))
+        
+    }else{
+        sensorSchema
+        .updateOne({_id:id}, {$set :{name : name,co2: co2}})
+        .then((data)=> res.json(data))
+        .catch((error)=> res.json({"message": error}))
+    }
+    
+})
+
+// remove sensor
+router.delete("/sensor/:id", (req,res)=>{
+    let {id} = req.params
+
+    sensorSchema
+        .findOneAndDelete({_id:id})
+        .then((data) => res.json(data))
+        .catch((error) => res.json({"message" : error}))
+})
 
 
 module.exports = router
