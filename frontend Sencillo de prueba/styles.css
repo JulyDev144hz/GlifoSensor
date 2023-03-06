@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-   
     font-family: 'Roboto', sans-serif;
 }
 
@@ -39,6 +38,7 @@ aside{
     height: 43rem;
     background-color: white;
     border-radius: 30px;
+    max-width: 22rem;
 }
 
 aside h2, aside h3{
@@ -66,8 +66,8 @@ aside h3{
 }
 
 .data_box{
-    width: 150px;
-    height: 160px;
+    width: 9rem;
+    height: 10rem;
     margin-bottom: 22px;
     border-radius: 20px;
     background-color: #D9C4EE;
@@ -181,4 +181,110 @@ aside h3{
 
 .dark-theme #map{
     filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+@media screen and (max-width: 1300px){
+    aside{
+        position: absolute;
+        z-index: 1;
+        background-color: transparent;
+        width: 22rem;
+        display: none;
+    }
+
+    .dark-theme aside{
+        background-color: transparent;
+    }
+
+    #map{
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        z-index: 0;
+    }
+
+    main{
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    
+}
+
+@media screen and (max-width: 500px){
+    .todo{
+        width: 20rem;
+        height: 38rem;
+    }
+
+    .data_box{
+        width: 8rem;
+        height: 8rem;
+    }
+
+    .data_box h4{
+        font-size: 24px;
+    }
+
+    .data_box p{
+        font-size: 35px;
+    }
+
+    
+}
+
+
+@media screen and (max-height: 700px){
+    header{
+       padding: .5rem .5rem;
+    }
+
+    
+
+    .todo{
+        width: 17rem;
+        height: 30rem;
+    }
+
+    aside h2{
+        font-size: 23px;
+    }
+
+    .data_box{
+        width: 6rem;
+        height: 5.5rem;
+    }
+
+    .data_box h4{
+        font-size: 20px;
+        padding-top: 7px;
+    }
+
+    .data_box p{
+        font-size: 30px;
+    }
+
+}
+
+
+.closeButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.closeButton button{
+    padding: 5px;
+    margin: 20px 0 0 20px;
+    border: none;
+    background-color: rgb(255, 144, 144);  
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+    display: none;
+}
+.closeButton button:hover{
+    background-color: red;
 }

@@ -23,7 +23,15 @@ const getSensors = async () => {
         
         marker.on("click", ()=>{
             updateData(s.name, s.co2)
-        
+            let data = document.querySelector('aside')
+            data.style.display = "flex"
+            let button = document.querySelector('.closeButton button')
+            button.style.display = "flex"
+
+            button.addEventListener('click', ()=>{
+                data.style.display = "none"
+            })
+           
         })
        
 
@@ -34,7 +42,6 @@ const getSensors = async () => {
 const updateData = (nombre, co2) =>{
     let dataNombre = document.getElementById("name")
     let dataCo2 = document.getElementById("co2")
-
     dataNombre.innerHTML = nombre
     dataCo2.innerHTML = co2
 }
