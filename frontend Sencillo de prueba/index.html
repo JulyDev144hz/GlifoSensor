@@ -12,10 +12,50 @@
 </head>
 
 <body>
-    <div id="map"></div>
+    <header>
+        <h1 class="title">GlifoSensor</h1>
+        <div class="container">
+            <input type="checkbox" name="" id="toggle">
+        </div>
+    </header>
+    <main>
+        <aside>
+            <div class="todo">
+                <h2>DATOS REPORTADOS</h2>
+                <h3>VILLA CRESPO</h3>
+                <div class="boxes">
+                    <div class="data_box">
+                        <h4>CO2</h4>
+                        <p>687</p>
+                    </div>
+                    <div class="data_box">
+                        <h4>PM1</h4>
+                        <p>6</p>
+                    </div>
+                    <div class="data_box">
+                        <h4>HUM</h4>
+                        <p>75%</p>
+                    </div>
+                    <div class="data_box">
+                        <h4>03</h4>
+                        <p>0.070</p>
+                    </div>
+                    <div class="data_box">
+                        <h4>UV</h4>
+                        <p>5</p>
+                    </div>
+                    <div class="data_box">
+                        <h4>SO2</h4>
+                        <p>100</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div id="map"></div>
+    </main>
 </body>
 <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 <script src="main.js"></script>
-
+<script src="toggle.js"></script>
 </html>
