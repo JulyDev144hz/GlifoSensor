@@ -51,3 +51,4 @@ getSensors()
 setInterval(() => {
     getSensors()
 }, 5000);
+
