@@ -31,17 +31,17 @@ router.post("/sensor", (req,res)=>{
 // put sensor
 router.put("/sensor/:id", (req,res)=>{
     let {id} = req.params
-    const {name, coords, co2} = sensorSchema(req.body)
+    const {name, coords, co2, humedad, temperatura} = sensorSchema(req.body)
 
     if (coords.length != 0){
         sensorSchema
-        .updateOne({_id:id}, {$set :{name, coords, co2}})
+        .updateOne({_id:id}, {$set :{name, coords, co2, humedad, temperatura}})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
         
     }else{
         sensorSchema
-        .updateOne({_id:id}, {$set :{name : name,co2: co2}})
+        .updateOne({_id:id}, {$set :{humedad, temperatura}})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
     }

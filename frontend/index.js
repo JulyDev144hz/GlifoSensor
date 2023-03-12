@@ -4,7 +4,7 @@ var SerialPort = require('serialport').SerialPort;
 const url = "mongodb://0.0.0.0:27017/sensor"; // Cambiar a la URL correcta de la base de datos
 const portName = 'COM3';
 const baudRate = 9600;
-// const fetch = require('node-fetch');
+const Sensor = require('../src/models/sensor')
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -17,28 +17,31 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
     parser.on('data', function(data){
       const datos = data.split(',')
-      const temperatura = parseFloat(datos[0])
-      const humedad = parseFloat(datos[1])
-      console.log(`Humedad: ${temperatura}`)
-      console.log(`Temperatura: ${humedad}`)
+      const humedad = parseFloat(datos[0])
+      const temperatura = parseFloat(datos[1])
 
-      // const body = JSON.stringify({ temperatura, humedad });
-
-      // const options = {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Content-Length': Buffer.byteLength(body)
-      //   },
-      //   body: body
-      // };
-
-      // fetch(`http://localhost:3000/sensor/640534da7ab15e4fa0a75f62`, options)
-      // .then(response => response.json())
-      // .then(data => console.log(data))
-      // .catch(error => console.error(error));
-
+      console.log(humedad + " "+ temperatura)
+      if (isNaN(temperatura) || isNaN(humedad)) {
+        console.log('Los datos del sensor no son válidos')
+        return
+      }
       
+      const datardos = { humedad: humedad , temperatura: temperatura}
+
+      fetch("http://localhost:3000/sensor/64053885ef6a3fdb8ffd6323",
+       {method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(datardos)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+        })
+        .catch(error => {
+          console.error(error)
+        })
     })
 
     parser.on('open', function(){
@@ -57,8 +60,8 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
           process.exit();
         });
       });
+      });
+    })
+    .catch((err) => {
+      console.error(err);
     });
-  })
-  .catch((err) => {
-    console.error(err);
-  });
