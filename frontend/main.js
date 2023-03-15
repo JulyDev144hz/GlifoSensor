@@ -20,9 +20,20 @@ const getSensors = async () => {
     json.forEach(s => {
         let marker = L.marker(s.coords)
         marker.addTo(map);
-        
+        // fetch(`http://localhost:3000/sensor/${s.id}`)
+        // .then(res => res.json())
+        // .then(data =>{
+        //     console.log(data)
+        // })
         marker.on("click", ()=>{
-            updateData(s.name, s.co2)
+            updateData(s.name, s.co2, s.temperatura, s.humedad)
+
+
+
+
+
+
+
             let data = document.querySelector('aside')
             data.style.display = "flex"
             let button = document.querySelector('.closeButton button')
@@ -39,11 +50,15 @@ const getSensors = async () => {
     });
 }
 
-const updateData = (nombre, co2) =>{
+const updateData = (nombre, co2, temperatura, humedad) =>{
     let dataNombre = document.getElementById("name")
     let dataCo2 = document.getElementById("co2")
+    let dataTemperatura = document.getElementById("temp")
+    let dataHumedad = document.getElementById('hum')
     dataNombre.innerHTML = nombre
     dataCo2.innerHTML = co2
+    dataTemperatura.innerHTML = temperatura
+    dataHumedad.innerHTML = humedad
 }
 
 
