@@ -9,10 +9,6 @@ let arrayMarkers = []
 let marker 
 const getSensors = async () => {
     
-    arrayMarkers.map(marker => {
-        map.removeLayer(marker)
-    })
-
     arrayMarkers = []
 
     let data = await fetch("http://localhost:3000/sensor")
@@ -40,8 +36,6 @@ const getSensors = async () => {
             updateData(s.name, s.co2, s.temperatura, s.humedad)
             let data = document.querySelector('aside')
             data.style.display = "flex"
-            let button = document.querySelector('.closeButton button')
-            button.style.display = "flex"
 
             button.addEventListener('click', ()=>{
                 data.style.display = "none"

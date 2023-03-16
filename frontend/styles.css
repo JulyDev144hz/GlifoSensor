@@ -183,6 +183,10 @@ aside h3{
     filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
 }
 
+.closeButton{
+    display: none;
+}
+
 @media screen and (max-width: 1300px){
     aside{
         position: absolute;
@@ -265,26 +269,25 @@ aside h3{
         font-size: 30px;
     }
 
+    .closeButton{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    
+    .closeButton button{
+        padding: 5px;
+        margin: 20px 0 0 20px;
+        border: none;
+        background-color: rgb(255, 144, 144);  
+        border-radius: 20px;
+        color: white;
+        cursor: pointer;
+        display: none;
+    }
+    .closeButton button:hover{
+        background-color: red;
+    }
 }
 
-
-.closeButton{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-.closeButton button{
-    padding: 5px;
-    margin: 20px 0 0 20px;
-    border: none;
-    background-color: rgb(255, 144, 144);  
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-    display: none;
-}
-.closeButton button:hover{
-    background-color: red;
-}
