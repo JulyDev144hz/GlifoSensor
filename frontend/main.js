@@ -6,9 +6,9 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let arrayMarkers = []
-
+let marker 
 const getSensors = async () => {
-
+    
     arrayMarkers.map(marker => {
         map.removeLayer(marker)
     })
@@ -18,22 +18,26 @@ const getSensors = async () => {
     let data = await fetch("http://localhost:3000/sensor")
     let json = await data.json()
     json.forEach(s => {
-        let marker = L.marker(s.coords)
+        if(s.humedad < 20){
+
+            marker = L.circle(s.coords, {
+                color: 'green',
+                fillColor: 'green',
+                fillOpacity: 0.5,
+                radius: 500
+            })
+        }else{
+            marker = L.circle(s.coords, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: 500
+            })
+        }
         marker.addTo(map);
-        // fetch(`http://localhost:3000/sensor/${s.id}`)
-        // .then(res => res.json())
-        // .then(data =>{
-        //     console.log(data)
-        // })
+
         marker.on("click", ()=>{
             updateData(s.name, s.co2, s.temperatura, s.humedad)
-
-
-
-
-
-
-
             let data = document.querySelector('aside')
             data.style.display = "flex"
             let button = document.querySelector('.closeButton button')
