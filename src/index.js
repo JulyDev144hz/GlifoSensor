@@ -1,6 +1,7 @@
 const userRoutes = require("./routes/user")
 const sensorRoutes = require("./routes/sensor")
 
+const morgan = require("morgan")
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
@@ -8,6 +9,7 @@ require("dotenv").config()
 
 
 const app = express()
+app.use(morgan("tiny"))
 app.use(cors())
 const port = process.env.PORT || 3000
 

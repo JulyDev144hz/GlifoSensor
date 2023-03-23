@@ -16,6 +16,10 @@ const sensorSchema = mongoose.Schema({
     humedad:{
         type:Number,
         required:true
+    },
+    co2:{
+        type:Number,
+        required:true
     }
 })
 
