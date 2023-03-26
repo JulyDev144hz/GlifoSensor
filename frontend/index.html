@@ -19,47 +19,65 @@
         </div>
     </header>
     <main>
-        <aside>
-            <div class="todo">
-                <div class="closeButton">
-
+        <div class="prueba">
+            <button class="burg">burgh</button>
+            <aside>
+                <div class="todo">
+                    <button class="xButton">X</button>
                     <h2>DATOS REPORTADOS</h2>
-                    <button>X</button>
+                    <div class="closeButton">
+    
+                        <button>X</button>
+                    </div>
+                    <h3 id="name">VILLA CRESPO</h3>
+                    <div class="boxes">
+                        <div class="data_box">
+                            <h4>CO2</h4>
+                            <p id="co2">687</p>
+                            <button class="masInfo" id="co2Info">?</button>
+                        </div>
+                        <div class="data_box">
+                            <h4>°C</h4>
+                            <p id="temp">0</p>
+                            <button class="masInfo" id="tempInfo">?</button>
+                        </div>
+                        <div class="data_box">
+                            <h4>HUM</h4>
+                            <p id="hum">75%</p>
+                            <button class="masInfo" id="humInfo">?</button>
+                        </div>
+                        <div class="data_box">
+                            <h4>03</h4>
+                            <p>0.070</p>
+                            <button class="masInfo" id="03Info">?</button>
+                        </div>
+                        <div class="data_box">
+                            <h4>UV</h4>
+                            <p>5</p>
+                            <button class="masInfo" id="uvInfo">?</button>
+                        </div>
+                        <div class="data_box">
+                            <h4>SO2</h4>
+                            <p>100</p>
+                            <button class="masInfo" id="so2Info">?</button>
+                        </div>
+                    </div>
                 </div>
-                <h3 id="name">VILLA CRESPO</h3>
-                <div class="boxes">
-                    <div class="data_box">
-                        <h4>CO2</h4>
-                        <p id="co2">687</p>
+                <section class="modal">
+                    <div class="modal_container">
+                        <a href="#" class="modal_close">X</a>
+                        <h1 class="modalTitle"></h1>
+                        <p class="modalText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad aliquid atque fugiat et nisi qui voluptatum sint non tempore porro.</p>
                     </div>
-                    <div class="data_box">
-                        <h4>°C</h4>
-                        <p id="temp">0</p>
-                    </div>
-                    <div class="data_box">
-                        <h4>HUM</h4>
-                        <p id="hum">75%</p>
-                    </div>
-                    <div class="data_box">
-                        <h4>03</h4>
-                        <p>0.070</p>
-                    </div>
-                    <div class="data_box">
-                        <h4>UV</h4>
-                        <p>5</p>
-                    </div>
-                    <div class="data_box">
-                        <h4>SO2</h4>
-                        <p>100</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
+                </section>
+            </aside>
+        </div>
+        
         <div id="map"></div>
     </main>
 </body>
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-<script src="main.js"></script>
-<script src="toggle.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+        integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script src="main.js"></script>
+    <script src="toggle.js"></script>
 </html>

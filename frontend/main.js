@@ -1,5 +1,6 @@
 var map = L.map('map').setView([-34.6140305,-58.4517207], 12);
-
+const todo = document.querySelector('.todo')
+const mapa = document.querySelector('#map')
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -33,13 +34,11 @@ const getSensors = async () => {
         marker.addTo(map);
 
         marker.on("click", ()=>{
-            updateData(s.name, s.co2, s.temperatura, s.humedad)
-            let data = document.querySelector('aside')
-            data.style.display = "flex"
+            updateData(s.name, s.temperatura, s.humedad)
+            
+            console.log("hola")
+            todo.style.display = "block"
 
-            button.addEventListener('click', ()=>{
-                data.style.display = "none"
-            })
            
         })
        
@@ -48,13 +47,11 @@ const getSensors = async () => {
     });
 }
 
-const updateData = (nombre, co2, temperatura, humedad) =>{
+const updateData = (nombre, temperatura, humedad) =>{
     let dataNombre = document.getElementById("name")
-    let dataCo2 = document.getElementById("co2")
     let dataTemperatura = document.getElementById("temp")
     let dataHumedad = document.getElementById('hum')
     dataNombre.innerHTML = nombre
-    dataCo2.innerHTML = co2
     dataTemperatura.innerHTML = temperatura
     dataHumedad.innerHTML = humedad
 }
@@ -63,5 +60,11 @@ const updateData = (nombre, co2, temperatura, humedad) =>{
 getSensors()
 setInterval(() => {
     getSensors()
-}, 5000);
+}, 5000)
 
+const xButton = document.querySelector('.xButton')
+
+
+xButton.addEventListener('click', ()=>{
+    todo.style.display = "none"
+})

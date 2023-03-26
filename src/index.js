@@ -1,6 +1,6 @@
 const userRoutes = require("./routes/user")
 const sensorRoutes = require("./routes/sensor")
-
+const infoRoutes = require('./routes/info')
 const morgan = require("morgan")
 const express = require("express")
 const cors = require("cors")
@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use("/",userRoutes)
 app.use("/",sensorRoutes)
-
+app.use("/", infoRoutes)
 
 //routes
 
