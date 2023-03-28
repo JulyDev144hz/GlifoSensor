@@ -4,74 +4,73 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>leaflet test</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
         integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
     <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 </head>
 
 <body>
     <header>
-        <h1 class="title">SensCity</h1>
+        <h1 class="title">CitySensor</h1>
         <div class="container">
             <input type="checkbox" name="" id="toggle">
         </div>
     </header>
     <main>
-        <div class="prueba">
-            <button class="burg">burgh</button>
-            <aside>
-                <div class="todo">
-                    <button class="xButton">X</button>
-                    <h2>DATOS REPORTADOS</h2>
-                    <div class="closeButton">
-    
-                        <button>X</button>
+      
+        <aside>
+            <div class="todo">
+                <button class="xButton">X</button>
+                <h2>DATOS REPORTADOS</h2>
+                <div class="closeButton">
+
+                    <button>X</button>
+                </div>
+                <h3 id="name">VILLA CRESPO</h3>
+                <div class="boxes">
+                    <div class="data_box">
+                        <h4>CO2</h4>
+                        <p id="co2">687</p>
+                        <button class="masInfo" id="co2Info">?</button>
                     </div>
-                    <h3 id="name">VILLA CRESPO</h3>
-                    <div class="boxes">
-                        <div class="data_box">
-                            <h4>CO2</h4>
-                            <p id="co2">687</p>
-                            <button class="masInfo" id="co2Info">?</button>
-                        </div>
-                        <div class="data_box">
-                            <h4>°C</h4>
-                            <p id="temp">0</p>
-                            <button class="masInfo" id="tempInfo">?</button>
-                        </div>
-                        <div class="data_box">
-                            <h4>HUM</h4>
-                            <p id="hum">75%</p>
-                            <button class="masInfo" id="humInfo">?</button>
-                        </div>
-                        <div class="data_box">
-                            <h4>03</h4>
-                            <p>0.070</p>
-                            <button class="masInfo" id="03Info">?</button>
-                        </div>
-                        <div class="data_box">
-                            <h4>UV</h4>
-                            <p>5</p>
-                            <button class="masInfo" id="uvInfo">?</button>
-                        </div>
-                        <div class="data_box">
-                            <h4>SO2</h4>
-                            <p>100</p>
-                            <button class="masInfo" id="so2Info">?</button>
-                        </div>
+                    <div class="data_box">
+                        <h4>°C</h4>
+                        <p id="temp">0</p>
+                        <button class="masInfo" id="tempInfo">?</button>
+                    </div>
+                    <div class="data_box">
+                        <h4>HUM</h4>
+                        <p id="hum">75%</p>
+                        <button class="masInfo" id="humInfo">?</button>
+                    </div>
+                    <div class="data_box">
+                        <h4>03</h4>
+                        <p>0.070</p>
+                        <button class="masInfo" id="03Info">?</button>
+                    </div>
+                    <div class="data_box">
+                        <h4>UV</h4>
+                        <p>5</p>
+                        <button class="masInfo" id="uvInfo">?</button>
+                    </div>
+                    <div class="data_box">
+                        <h4>SO2</h4>
+                        <p>100</p>
+                        <button class="masInfo" id="so2Info">?</button>
                     </div>
                 </div>
-                <section class="modal">
-                    <div class="modal_container">
-                        <a href="#" class="modal_close">X</a>
-                        <h1 class="modalTitle"></h1>
-                        <p class="modalText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad aliquid atque fugiat et nisi qui voluptatum sint non tempore porro.</p>
-                    </div>
-                </section>
-            </aside>
-        </div>
+            </div>
+            <section class="modal">
+                <div class="modal_container">
+                    <a href="#" class="modal_close">X</a>
+                    <h1 class="modalTitle"></h1>
+                    <p class="modalText">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad aliquid atque fugiat et nisi qui voluptatum sint non tempore porro.</p>
+                </div>
+            </section>
+        </aside>
+        
         
         <div id="map"></div>
     </main>

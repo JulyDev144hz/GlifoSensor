@@ -5,9 +5,11 @@
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
 }
-
+body{
+    height: 100vh;
+}
 #map{
-    height: 88vh; 
+    height: 100vh; 
    width: 70vw;
    z-index: 0;
 }
@@ -15,7 +17,7 @@
 header{
     background-color: white;
     color: #7E00FF;
-    padding: 1rem 2rem;
+    
     display: flex;
     align-items: center;
 }
@@ -31,7 +33,8 @@ aside{
     display: flex;
     background-color: #E2E1F4;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding-top: 20px;
 }
 
 .xButton{
@@ -303,7 +306,7 @@ aside h3{
 
 
     .todo{
-        height: 45rem;
+        height: auto;
     }
     .dark-theme aside{
         background-color: transparent;
@@ -337,7 +340,7 @@ aside h3{
 @media screen and (max-width: 500px){
     .todo{
         width: 20rem;
-        height: 38rem;
+        height: auto;
         z-index: 2;
     }
 
@@ -360,13 +363,14 @@ aside h3{
 
 @media screen and (max-height: 700px){
     header{
-       padding: .5rem .5rem;
+       padding: 0 .5em;
     }
+
 
 
     .todo{
         width: 17rem;
-        height: 30rem;
+        height: auto;
     }
 
     aside h2{
@@ -374,8 +378,8 @@ aside h3{
     }
 
     .data_box{
-        width: 6rem;
-        height: 5.5rem;
+        width: 7rem;
+        height: auto;
     }
 
     .data_box h4{
@@ -385,6 +389,9 @@ aside h3{
 
     .data_box p{
         font-size: 30px;
+        justify-self: center;
+        transform: translateY(-10px);
+       
     }
 
     .closeButton{
@@ -407,17 +414,6 @@ aside h3{
     .closeButton button:hover{
         background-color: red;
     }
-}
-
-
-
-aside{
-    display: none;
-}
-
-.prueba{
-    width: 100px;
-    background-color: #7E00FF;
 }
 
 #map{
