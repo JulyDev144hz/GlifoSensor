@@ -2,8 +2,8 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char* ssid = "BA Escuela";
-const char* password =  "";
+const char* ssid = "ESP32";
+const char* password =  "glifosensor";
 
 int humedad = 0;
 int temperatura = 42;
@@ -47,19 +47,20 @@ void loop() {
     String jsonString;
     serializeJson(jsonDocument, jsonString);
 
-  Serial.println(jsonString);
+ // Serial.println(jsonString);
 
  
-    http.begin("http://192.168.2.20:3000/sensor");  //Specify destination for HTTP request
-    http.addHeader("Content-Type", "text/plain");             //Specify content-type header
+    http.begin("http://192.168.116.6:3000/sensor");  //Specify destination for HTTP request
+    http.addHeader("Content-Type", "application/json");             //Specify content-type header
     
     int httpResponseCode = http.POST(jsonString);
-//    int httpResponseCode = http.POST("{\"name\":\"Sensor\", \"temperatura\":1, \"coords\":[34.554966,-58.361135], \"humedad\":0. \"co2\":1}");   //Send the actual POST request
-//  int httpResponseCode = http.GET();
+   // int httpResponseCode = http.POST("{\"name\":\"Sensor\",\"temperatura\":\"22\",\"humedad\":\"24\",\"co2\":\"1\",\"coords\":\"[-34.554966,-58.361135]\"}");   //Send the actual POST request
+  // int httpResponseCode = http.GET();
  
     if(httpResponseCode>0){
  
       Serial.println(httpResponseCode);   //Print return code
+      Serial.println(http.getString());
     }else{
  
       Serial.print("Error on sending request: ");
@@ -75,5 +76,5 @@ void loop() {
  
  }
  
-  delay(5000);  //Send a request every 5 seconds
+  delay(27418000);  //Send a request every 5 seconds
 }
