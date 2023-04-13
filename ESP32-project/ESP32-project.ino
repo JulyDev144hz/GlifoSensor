@@ -10,14 +10,14 @@
 #define DHTTYPE DHT11
 
 // Aca va el nombre del sensor
-char* nombre = "sENSOR";
+char* nombre = "Nuevo Sensor";
 
 DHT dht(DHTPIN, DHTTYPE);
 
+const String ipServer = "192.168.2.19" ;
 
-
-const char* ssid = "ESP32";
-const char* password =  "glifosensor";
+const char* ssid = "BA Escuela";
+const char* password =  "";
 
 float coords[2] = {-34.554966,-58.361135};
 
@@ -67,7 +67,7 @@ void loop() {
    Serial.println(jsonString);
 
  
-    http.begin("http://192.168.232.6:3000/sensor");  //Specify destination for HTTP request
+    http.begin("http://"+ipServer+":3000/sensor");  //Specify destination for HTTP request
     http.addHeader("Content-Type", "application/json");             //Specify content-type header
     
     //int httpResponseCode = http.POST(jsonString);
@@ -83,19 +83,28 @@ void loop() {
      
      DynamicJsonDocument doc(1024);
      deserializeJson(doc, jsonResponse);
-     
+     bool found = false;
      for(int i = 0; i<doc.size(); i++){
+        found = false;
         if (doc[i]["name"] == nombre){
+            found = true;
             const String id = doc[i]["_id"];
             http.end();
-            String url = "http://192.168.232.6:3000/sensor/"+id;
-            putHttp(url, jsonString); 
+            String url = "http://"+ipServer+":3000/sensor/"+id;
+            requestHTTP(url, "PUT", jsonString); 
           }
       }
+      if (!found){
+            http.end();
+            String url = "http://"+ipServer+":3000/sensor/";
+            requestHTTP(url, "POST", jsonString) ;
+        }
+      
     }else{
  
       Serial.print("Error on sending request: ");
       Serial.println(httpResponseCode);
+      Serial.println(http.errorToString(httpResponseCode).c_str());
       
       
    }
@@ -112,16 +121,23 @@ void loop() {
   delay(5000);  //Send a request every 5 seconds
 }
 
-void putHttp(String url, String json){
+void requestHTTP(String url, String request , String json){
     HTTPClient http;
   
   http.begin(url);
   http.addHeader("Content-Type", "application/json");
-  int httpResponseCode = http.PUT(json);
+  int httpResponseCode ;
+  
+  if(request == "PUT"){
+      httpResponseCode = http.PUT(json);
+  }else if (request=="POST"){
+      httpResponseCode = http.POST(json);
+  }
   
   if(httpResponseCode>0){
  
       Serial.println(httpResponseCode);   //Print return code
+      Serial.println(http.errorToString(httpResponseCode).c_str());
       
     }else{
  

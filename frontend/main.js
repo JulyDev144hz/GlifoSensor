@@ -44,13 +44,13 @@ const getSensors = async () => {
         marker.addTo(map);
         
         marker.on("mouseover", () => {
-            updateData(s.name, s.temperatura, s.humedad)
+            
             todo.style.display = "block"
             
             
             
         })
-        
+        updateData(s.name, s.temperatura, s.humedad)
         
         
         
