@@ -1,6 +1,6 @@
-#include <MQ131.h> //https://github.com/ostaquet/Arduino-MQ131-driver / descargar desde el administrador de bibliotecas
-#include <SoftwareSerial.h> //https://docs.arduino.cc/learn/built-in-libraries/software-serial / ya viene en arduino
-#include <TinyGPS.h>// mirar el link de SoftwareSerial / descargar desde el administrador de bibliotecas
+#include <MQ131.h> // Informacion sobre librería: https://github.com/ostaquet/Arduino-MQ131-driver / descargar desde el administrador de bibliotecas. El nombre de la librería es MQ131
+#include <SoftwareSerial.h> //Informacion sobre librería: https://docs.arduino.cc/learn/built-in-libraries/software-serial / ya viene en arduino
+#include <TinyGPS.h>// mirar el link de SoftwareSerial / descargar desde el administrador de bibliotecas. El nombre de la librería es TinyGPS
 // Necesario para GPS
 TinyGPS gps;
 SoftwareSerial ss(4,3);
@@ -8,7 +8,7 @@ SoftwareSerial ss(4,3);
 void setup() {
   Serial.begin(115200);
   ss.begin(9600);
-  /* Activar el sensor:
+  /* Activar el sensor MQ-131:
    Control de calor en pin x en este caso 2
    Sensor analog read en pin x en este caso A0
    Modo LOW_CONCENTRATION (investigar bien)
@@ -32,28 +32,28 @@ void loop() {
   Serial.print(", Sensor voltage = ");
   Serial.print(sensorVoltage);
   Serial.println(" V");
-  delay(1000);
-  println("");
+  println(" ");
   
   //Sensor MQ-4
   Serial.print("Gas metano: ");
   Serial.println(analogRead(A2)); //Poner pin analógico donde vaya el sensor MQ-4 no necesariamente A2
-  println("");
+  println(" ");
   
   //Sensor MQ-131
   Serial.println("Sampling..."); 
   MQ131.sample(); //Toma una muestra
   Serial.print("Concentration O3 : ");
-  Serial.print(MQ131.getO3(PPM)); //Calcula la muestra en PPM (PArticula Por Millón)
+  Serial.print(MQ131.getO3(PPM)); //Calcula la muestra en PPM (Particula Por Millón)
   Serial.println(" ppm");
-  println("");
+  println(" ");
   
   //Modulo GPS              / En caso de tener problemas durante el testing revisar esta página https://www.pjrc.com/teensy/td_libs_TinyGPS.html
   /*if(gps.available())
   {
     dato=gps.read();
     Serial.print(dato);
-  }*/
+  }
+  Esto esta documentado porque así se haría sin la librería TinyGPS y solo se usaría SoftwareSerial*/
   bool newData = false;
   unsigned long chars;
   unsigned short sentences, failed;
@@ -94,5 +94,6 @@ void loop() {
   if (chars == 0){
     Serial.println("** No characters received from GPS: check wiring **");
   }
-  println("");
+  println(" ");
+  delay(1000);
 }
