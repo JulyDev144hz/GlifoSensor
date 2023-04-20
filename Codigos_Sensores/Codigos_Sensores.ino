@@ -25,7 +25,7 @@ void loop() {
   float sensorVoltage; 
   float sensorValue;
  
-  sensorValue = analogRead(A0); //usar un pin analogico, no necesariamente A0
+  sensorValue = analogRead(A1); //usar un pin analogico, no necesariamente A1
   sensorVoltage = sensorValue/1024*5.0;          
   Serial.print("sensor reading = ");
   Serial.print(sensorValue); //Ver si el valor esta en la unidad de medida correcta
@@ -33,6 +33,12 @@ void loop() {
   Serial.print(sensorVoltage);
   Serial.println(" V");
   delay(1000);
+  println("");
+  
+  //Sensor MQ-4
+  Serial.print("Gas metano: ");
+  Serial.println(analogRead(A2)); //Poner pin analógico donde vaya el sensor MQ-4 no necesariamente A2
+  println("");
   
   //Sensor MQ-131
   Serial.println("Sampling..."); 
@@ -40,8 +46,9 @@ void loop() {
   Serial.print("Concentration O3 : ");
   Serial.print(MQ131.getO3(PPM)); //Calcula la muestra en PPM (PArticula Por Millón)
   Serial.println(" ppm");
-
-  //Modulo GPS
+  println("");
+  
+  //Modulo GPS              / En caso de tener problemas durante el testing revisar esta página https://www.pjrc.com/teensy/td_libs_TinyGPS.html
   /*if(gps.available())
   {
     dato=gps.read();
@@ -68,9 +75,9 @@ void loop() {
     unsigned long age;
     gps.f_get_position(&flat, &flon, &age);
     Serial.print("LAT=");
-    Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+    Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6); //Muestra la latitud de la locacion del GPS
     Serial.print(" LON=");
-    Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+    Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6); //Muestra la longitud
     Serial.print(" SAT=");
     Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
     Serial.print(" PREC=");
@@ -82,9 +89,10 @@ void loop() {
   Serial.print(chars);
   Serial.print(" SENTENCES=");
   Serial.print(sentences);
-  Serial.print(" CSUM ERR=");
+  Serial.print(" CHECKSUM ERROR=");
   Serial.println(failed);
   if (chars == 0){
     Serial.println("** No characters received from GPS: check wiring **");
   }
+  println("");
 }
