@@ -8,6 +8,43 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let arrayMarkers = []
 let marker
+
+class Barrio{
+    constructor(name,coords){
+        this.name = name
+        this.coords = coords
+        this.polygon = L.polygon(this.coords)
+    }
+}
+
+
+let barrios = []
+
+$.getJSON("./barrios.geojson.json",json=>{
+    
+    json.features.forEach(barrio =>{
+        let name = barrio.properties.BARRIO
+        let coords = barrio.geometry.coordinates[0][0]
+        coords.forEach((coord, index)=>{
+    
+            coords[index]= [coord[1],coord[0]]
+        })
+
+        let newBarrio = new Barrio(name,coords)
+        barrios.push(newBarrio)
+
+    })
+})
+
+setInterval(() => {
+    barrios.forEach(barrio=>{
+        barrio.polygon.addTo(map)
+        barrio.polygon.on("mouseover",e=>{
+            updateData(barrio.name,1,1)
+        })
+    })
+}, 100);
+
 const getSensors = async () => {
 
     oldArrayMarkers = arrayMarkers
