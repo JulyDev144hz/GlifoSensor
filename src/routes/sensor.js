@@ -32,10 +32,11 @@ router.post("/sensor", (req,res)=>{
 router.put("/sensor/:id", (req,res)=>{
     let {id} = req.params
     const {name, coords, co2, humedad, temperatura} = sensorSchema(req.body)
+    const updatedAt = new Date().toLocaleString()
 
     if (coords.length != 0){
         sensorSchema
-        .updateOne({_id:id}, {$set :{name, coords, co2, humedad, temperatura}})
+        .updateOne({_id:id}, {$set :{name, coords, updatedAt, co2, humedad, temperatura}})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
         

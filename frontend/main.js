@@ -70,10 +70,10 @@ setInterval(() => {
     barrio.polygon.on("mouseover", (e) => {
       
       try {
-        updateData(barrio.name, barrio.sensores[0].temperatura, barrio.sensores[0].humedad);
+        updateData(barrio.name, barrio.sensores[0].temperatura, barrio.sensores[0].humedad, barrio.sensores[0].updatedAt);
           
       } catch (error) {
-        updateData(barrio.name, 1, 1);
+        updateData(barrio.name, 1, 1, "sin registro");
         
       }
     });
@@ -139,11 +139,13 @@ const getSensors = async () => {
   oldArrayMarkers = [];
 };
 
-const updateData = (nombre, temperatura, humedad) => {
+const updateData = (nombre, temperatura, humedad, actualizado) => {
   let dataNombre = document.getElementById("name");
+  let updatedAt = document.getElementById("updatedAt");
   let dataTemperatura = document.getElementById("temp");
   let dataHumedad = document.getElementById("hum");
   dataNombre.innerHTML = nombre;
+  updatedAt.innerHTML = `Actualizado: ${actualizado}`;
   dataTemperatura.innerHTML = temperatura;
   dataHumedad.innerHTML = humedad;
 };

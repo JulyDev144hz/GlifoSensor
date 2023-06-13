@@ -9,6 +9,10 @@ body{
     height: 100vh;
     overflow: hidden;
 }
+#updatedAt{
+    text-align: center;
+    color: #999;
+}
 #map{
     height: 100vh; 
    width: 70vw;

@@ -9,6 +9,16 @@ const sensorSchema = mongoose.Schema({
         type:Array,
         required:true
     },
+    createdAt:{
+        type:String,
+        default:new Date().toLocaleString,
+        required:false
+    },
+    updatedAt:{
+        type:String,
+        default:new Date().toLocaleString(),
+        required:false
+    },
     temperatura:{
         type:Number,
         required:true
