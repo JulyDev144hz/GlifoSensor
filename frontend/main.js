@@ -59,22 +59,22 @@ $.getJSON("./barrios.geojson.json", (json) => {
 setInterval(() => {
   barrios.forEach((barrio) => {
 
-    let sumTotal =0
+    let sumTotal = 0
 
-    barrio.sensores.map(s=> sumTotal+=s.temperatura)
-    if( sumTotal / barrio.sensores.length > 30 ){
-      barrio.polygon.setStyle({color:'red'});
+    barrio.sensores.map(s => sumTotal += s.temperatura)
+    if (sumTotal / barrio.sensores.length > 30) {
+      barrio.polygon.setStyle({ color: 'red' });
     }
-    
+
     barrio.polygon.addTo(map)
     barrio.polygon.on("mouseover", (e) => {
-      
+
       try {
         updateData(barrio.name, barrio.sensores[0].temperatura, barrio.sensores[0].humedad, barrio.sensores[0].updatedAt);
-          
+
       } catch (error) {
         updateData(barrio.name, 1, 1, "sin registro");
-        
+
       }
     });
   });
@@ -83,60 +83,41 @@ setInterval(() => {
 
 
 const getSensors = async () => {
-  oldArrayMarkers = arrayMarkers;
 
-  arrayMarkers = [];
+  try {
+    oldArrayMarkers = arrayMarkers;
 
-  let data = await fetch("http://localhost:3000/sensor");
-  let json = await data.json();
-  json.forEach((s) => {
-    barrios.map(barr =>{
-      
+    arrayMarkers = [];
 
-      if(RayCasting(s.coords, barr.coords)){
-        if(barr.sensores.find(e=> e._id == s._id) == undefined){
-          barr.sensores.push(s)
+    let data = await fetch("http://localhost:3000/sensor");
+    let json = await data.json();
+    json.forEach((s) => {
+      barrios.map(barr => {
+
+
+        if (RayCasting(s.coords, barr.coords)) {
+          if (barr.sensores.find(e => e._id == s._id) == undefined) {
+            barr.sensores.push(s)
+          }
+        } else {
+          if (barr.sensores.find(e => e._id == s._id) != undefined) {
+            barr.sensores.filter(e => e._id != s._id)
+          }
         }
-      }else{
-        if(barr.sensores.find(e=>e._id==s._id) != undefined){
-          barr.sensores.filter(e=>e._id!=s._id)
-        }
-      }
-      
-    })
-    // if (s.humedad < 20) {
-    //   marker = L.circle(s.coords, {
-    //     color: "green",
-    //     fillColor: "green",
-    //     fillOpacity: 0.5,
-    //     radius: 500,
-    //   });
-    // } else {
-    //   marker = L.circle(s.coords, {
-    //     color: "red",
-    //     fillColor: "#f03",
-    //     fillOpacity: 0.5,
-    //     radius: 500,
-    //   });
-    // }
 
-    // marker.addTo(map);
+      })
+   
+    });
 
-    // marker.on("mouseover", () => {
-    //   todo.style.display = "block";
-    // });
-    // updateData(s.name, s.temperatura, s.humedad);
+    oldArrayMarkers.map((mk) => {
+      mk.removeFrom(map);
+    });
 
-    // arrayMarkers.push(marker);
-  });
+    oldArrayMarkers = [];
+  } catch (error) {
+    console.error(error)
+  }
 
-  oldArrayMarkers.map((mk) => {
-    // mk.setLatLng(new L.LatLng(mk.getLatLng().lat, mk.getLatLng().lng));
-
-    mk.removeFrom(map);
-  });
-
-  oldArrayMarkers = [];
 };
 
 const updateData = (nombre, temperatura, humedad, actualizado) => {
