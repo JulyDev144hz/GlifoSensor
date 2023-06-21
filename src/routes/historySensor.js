@@ -1,27 +1,26 @@
 const express = require("express")
 const router = express.Router()
-const sensorSchema = require("../models/sensor")
 const historySensorSchema = require("../models/historySensor")
 
 // get all sensors
-router.get("/sensor", (req,res)=>{
-    sensorSchema
+router.get("/historySensor", (req,res)=>{
+    historySensorSchema
         .find()
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
 })
-router.get("/sensor/:id", (req,res)=>{
+router.get("/historySensor/:id", (req,res)=>{
     let {id} = req.params
 
-    sensorSchema
+    historySensorSchema
         .findById(id)
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
 })
 
 // post sensor
-router.post("/sensor", (req,res)=>{
-    const sensor = sensorSchema(req.body)
+router.post("/historySensor", (req,res)=>{
+    const sensor = historySensorSchema(req.body)
 
 
     sensor
@@ -30,31 +29,21 @@ router.post("/sensor", (req,res)=>{
         .catch((error)=> res.json({"message": error}))
 })
 // put sensor
-router.put("/sensor/:id", (req,res)=>{
+router.put("/historySensor/:id", (req,res)=>{
     let {id} = req.params
-    const {name, coords, co2, humedad, temperatura} = sensorSchema(req.body)
+    const {name, coords, co2, humedad, temperatura} = historySensorSchema(req.body)
     const updatedAt = new Date().toLocaleString()
 
     
-  historySensorSchema({
-    idSensor: id,
-    name,
-    timeStamp: updatedAt,
-    temperatura,
-    humedad,
-    co2,
-  })
-    .save()
-
     if (coords.length != 0){
         sensorSchema
-        .updateOne({_id:id}, {$set :{name, coords, updatedAt, co2, humedad, temperatura}})
+        .historySensorSchema({_id:id}, {$set :{name, coords, updatedAt, co2, humedad, temperatura}})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
         
     }else{
         sensorSchema
-        .updateOne({_id:id}, {$set :{humedad, temperatura}})
+        .historySensorSchema({_id:id}, {$set :{humedad, temperatura}})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
     }
@@ -62,10 +51,10 @@ router.put("/sensor/:id", (req,res)=>{
 })
 
 // remove sensor
-router.delete("/sensor/:id", (req,res)=>{
+router.delete("/historySensor/:id", (req,res)=>{
     let {id} = req.params
 
-    sensorSchema
+    historySensorSchema
         .findOneAndDelete({_id:id})
         .then((data) => res.json(data))
         .catch((error) => res.json({"message" : error}))
