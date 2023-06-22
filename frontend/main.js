@@ -136,8 +136,3 @@ setInterval(() => {
   getSensors();
 }, 5000);
 
-const xButton = document.querySelector(".xButton");
-
-xButton.addEventListener("click", () => {
-  todo.style.display = "none";
-});

@@ -1,128 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>leaflet test</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-      crossorigin=""
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-  </head>
 
-  <body>
-    <header>
-      <h1 class="title">CitySensor <a href="grafico.html">graficos</a></h1>
-      <div class="container">
-        <input type="checkbox" name="" id="toggle" />
-      </div>
-    </header>
-    <main>
-      <aside>
-        <div class="todo">
-          <button class="xButton">X</button>
-          <h2>DATOS REPORTADOS</h2>
-          <div class="closeButton">
-            <button>X</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>leaflet test</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+    integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <link rel="stylesheet" href="./styles/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="title">CitySensor</h1>
+    <div class="containerCheckBox">
+      <input type="checkbox" name="" id="toggle" />
+    </div>
+  </header>
+  <main class="main">
+    <div class="mapInfo">
+      <aside class="asideInfo">
+        <h2 class="titleDatosReportados">DATOS REPORTADOS</h2>
+        <h3 class="nameBarrio" id="name">VILLA CRESPO</h3>
+        <p id="updatedAt">Actualizado: sin registro</p>
+        <div class="boxes">
+          <div class="data_box">
+            <h4 class="dataName">CO2</h4>
+            <p id="co2">687</p>
+            <button class="masInfo" id="co2Info">?</button>
           </div>
-          <h3 id="name">VILLA CRESPO</h3>
-          <p id="updatedAt">Actualizado: sin registro</p>
-          <div class="boxes">
-            <div class="data_box">
-              <h4>CO2</h4>
-              <p id="co2">687</p>
-              <button class="masInfo" id="co2Info">?</button>
-            </div>
-            <div class="data_box">
-              <h4>°C</h4>
-              <p id="temp">0</p>
-              <button class="masInfo" id="tempInfo">?</button>
-            </div>
-            <div class="data_box">
-              <h4>HUM</h4>
-              <p id="hum">75%</p>
-              <button class="masInfo" id="humInfo">?</button>
-            </div>
-            <div class="data_box">
-              <h4>O3</h4>
-              <p>0.070</p>
-              <button class="masInfo" id="03Info">?</button>
-            </div>
-            <div class="data_box">
-              <h4>UV</h4>
-              <p>5</p>
-              <button class="masInfo" id="uvInfo">?</button>
-            </div>
-            <div class="data_box">
-              <h4>PM2.5</h4>
-              <p>100</p>
-              <button class="masInfo" id="so2Info">?</button>
-            </div>
+          <div class="data_box">
+            <h4 class="dataName">°C</h4>
+            <p id="temp">0</p>
+            <button class="masInfo" id="tempInfo">?</button>
+          </div>
+          <div class="data_box">
+            <h4 class="dataName">HUM</h4>
+            <p id="hum">75%</p>
+            <button class="masInfo" id="humInfo">?</button>
+          </div>
+          <div class="data_box">
+            <h4 class="dataName">O3</h4>
+            <p>0.070</p>
+            <button class="masInfo" id="03Info">?</button>
+          </div>
+          <div class="data_box">
+            <h4 class="dataName">UV</h4>
+            <p>5</p>
+            <button class="masInfo" id="uvInfo">?</button>
+          </div>
+          <div class="data_box">
+            <h4 class="dataName">PM2.5</h4>
+            <p>100</p>
+            <button class="masInfo" id="so2Info">?</button>
           </div>
         </div>
-        <section class="modal">
-          <div class="modal_container">
-            <a href="#" class="modal_close">X</a>
-            <h1 class="modalTitle"></h1>
-            <p class="modalText">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad
-              aliquid atque fugiat et nisi qui voluptatum sint non tempore
-              porro.
-            </p>
-          </div>
-        </section>
+
       </aside>
 
       <div id="map"></div>
+    </div>
 
-      <div class="datosSensor">
-        <h2>Graficos</h2>
-        <div>
-          <p>Datos</p>
-          <canvas id="myChart"></canvas>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <script>
-          const ctx = document.getElementById("myChart");
-          const cfg = {
-            type: "line",
-            data: {
-              datasets: [
-                {
-                  label: "A la pelotelson",
-                  data: [
-                    { x: "2016-12-25", y: 20 },
-                    { x: "2016-12-26", y: 10 },
-                    { x: "2016-12-27 10:35", y: 50 },
-                    { x: "2016-12-27 15:50", y: 20 },
-                    { x: "2016-12-28 15:50", y: 50 },
-                  ],
-                  tension: 0.4,
-                },
-              ],
-            },
-          };
-          new Chart(ctx, cfg);
-        </script>
+    <div class="datosSensor">
+      <h2>Graficos</h2>
+      <div>
+        <p>Datos</p>
+        <canvas id="myChart"></canvas>
       </div>
-    </main>
-  </body>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-  <script
-    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-    crossorigin=""
-  ></script>
-  <script src="main.js"></script>
-  <script src="InfoButtons.js"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <script>
+        const ctx = document.getElementById("myChart");
+        const cfg = {
+          type: "line",
+          data: {
+            datasets: [
+              {
+                label: "A la pelotelson",
+                data: [
+                  { x: "2016-12-25", y: 20 },
+                  { x: "2016-12-26", y: 10 },
+                  { x: "2016-12-27 10:35", y: 50 },
+                  { x: "2016-12-27 15:50", y: 20 },
+                  { x: "2016-12-28 15:50", y: 50 },
+                ],
+                tension: 0.4,
+              },
+            ],
+          },
+        };
+        new Chart(ctx, cfg);
+      </script>
+    </div>
+  </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="main.js"></script>
+<script src="InfoButtons.js"></script>
+
 </html>
