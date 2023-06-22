@@ -113,6 +113,7 @@ setTimeout(() => {
         fetch("http://localhost:3000/historySensor/"+id).then(data=>data.json()).then(
           json=>{
             json.map((sensor, index)=>{
+              $("#sensorName").html(`Sensor: ${sensor.name}`)
               chart1.data.datasets[0].data[index] = {x:sensor.timeStamp,y:sensor.humedad}
               chart1.data.datasets[1].data[index] = {x:sensor.timeStamp,y:sensor.co2}
               chart1.data.datasets[2].data[index] = {x:sensor.timeStamp,y:sensor.temperatura}

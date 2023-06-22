@@ -159,9 +159,7 @@
   text-align: center;
 }
 
-.datosSensor div {
-  width: 100%;
-  height: 600px;
-  background: rgba(255, 255, 255, 0.863);
+.datosSensor .sensor {
+  background: white;
 }
 /*# sourceMappingURL=styles.css.map */
