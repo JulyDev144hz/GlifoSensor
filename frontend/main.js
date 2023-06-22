@@ -7,6 +7,45 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
+const ctx = document.getElementById("myChart");
+const cfg = {
+  type: "line",
+  data: {
+    datasets: [
+      {
+        label: "Humedad",
+        data: [
+          { x: "2016-12-25", y: 20 },
+          { x: "2016-12-26", y: 10 },
+        ],
+        tension: 0.4,
+      },
+      {
+        label: "Co2",
+        data: [
+          { x: "2016-12-25", y: 20 },
+          { x: "2016-12-26", y: 15 },
+        ],
+        tension: 0.4,
+      },
+      {
+        label: "Temperatura",
+        data: [
+          { x: "2016-12-25", y: 15 },
+          { x: "2016-12-26", y: 16 },
+        ],
+        tension: 0.4,
+      },
+    ],
+  },
+};
+let chart1 = new Chart(ctx, cfg);
+// [0,1,2,3,4,5,6].map(e=>{
+//   humedad.data.datasets[0].data[e] = {x:"2016/12/"+e,y:e*50}
+
+// })
+// humedad.update()
+
 let arrayMarkers = [];
 let marker;
 
@@ -56,7 +95,7 @@ $.getJSON("./barrios.geojson.json", (json) => {
   });
 });
 
-setInterval(() => {
+setTimeout(() => {
   barrios.forEach((barrio) => {
 
     let sumTotal = 0
@@ -67,6 +106,25 @@ setInterval(() => {
     }
 
     barrio.polygon.addTo(map)
+    barrio.polygon.on("click", e=>{
+      window.location = "#datosSensor"
+      try {
+        let id = barrio.sensores[0]._id
+        fetch("http://localhost:3000/historySensor/"+id).then(data=>data.json()).then(
+          json=>{
+            json.map((sensor, index)=>{
+              chart1.data.datasets[0].data[index] = {x:sensor.timeStamp,y:sensor.humedad}
+              chart1.data.datasets[1].data[index] = {x:sensor.timeStamp,y:sensor.co2}
+              chart1.data.datasets[2].data[index] = {x:sensor.timeStamp,y:sensor.temperatura}
+            })
+            chart1.update()
+            
+          }
+        )
+      } catch (error) {
+        
+      }
+    })
     barrio.polygon.on("mouseover", (e) => {
 
       try {
@@ -93,15 +151,16 @@ const getSensors = async () => {
     let json = await data.json();
     json.forEach((s) => {
       barrios.map(barr => {
-
-
+        
+        
         if (RayCasting(s.coords, barr.coords)) {
-          if (barr.sensores.find(e => e._id == s._id) == undefined) {
+          // if (barr.sensores.find(e => e._id == s._id) == undefined) {
+            barr.sensores = barr.sensores.filter(e => e._id != s._id)
             barr.sensores.push(s)
-          }
+          // }
         } else {
           if (barr.sensores.find(e => e._id == s._id) != undefined) {
-            barr.sensores.filter(e => e._id != s._id)
+            barr.sensores = barr.sensores.filter(e => e._id != s._id)
           }
         }
 

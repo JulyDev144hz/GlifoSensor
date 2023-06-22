@@ -13,7 +13,7 @@ router.get("/historySensor/:id", (req,res)=>{
     let {id} = req.params
 
     historySensorSchema
-        .findById(id)
+        .find({"idSensor":id})
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))
 })
