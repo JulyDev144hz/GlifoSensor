@@ -7,6 +7,14 @@
   scroll-behavior: smooth;
 }
 
+.title {
+  color: #c2f0dd;
+  line-height: 64px;
+  font-size: 35px;
+  text-align: center;
+  width: 100%;
+}
+
 .header {
   height: 64px;
   -webkit-box-shadow: 0 0 5px #000;
@@ -14,12 +22,6 @@
   position: relative;
   background: linear-gradient(-135deg, #55aa00, #009c4c);
   z-index: 5;
-}
-
-.header .title {
-  color: #c2f0dd;
-  line-height: 64px;
-  text-align: center;
 }
 
 .header .containerCheckBox {
@@ -149,17 +151,26 @@
 .datosSensor {
   min-height: 100vh;
   background: linear-gradient(-45deg, #55aa00, #005e72);
-}
-
-.datosSensor .datosH2 {
-  font-size: 75px;
-  color: white;
-  text-transform: uppercase;
-  text-shadow: 0 0 5px #000;
-  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 
 .datosSensor .sensor {
-  background: white;
+  width: 75%;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.datosSensor .sensor h6 {
+  text-align: center;
+  font-size: 30px;
 }
 /*# sourceMappingURL=styles.css.map */

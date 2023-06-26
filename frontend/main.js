@@ -7,7 +7,8 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-const ctx = document.getElementById("myChart");
+const sensores = document.getElementById("sensores");
+const ctx = document.getElementById("ChartPromedio");
 const cfg = {
   type: "line",
   data: {
@@ -106,24 +107,27 @@ setTimeout(() => {
     }
 
     barrio.polygon.addTo(map)
-    barrio.polygon.on("click", e=>{
+    barrio.polygon.on("click", e => {
       window.location = "#datosSensor"
       try {
         let id = barrio.sensores[0]._id
-        fetch("http://localhost:3000/historySensor/"+id).then(data=>data.json()).then(
-          json=>{
-            json.map((sensor, index)=>{
+        fetch("http://localhost:3000/historySensor/" + id).then(data => data.json()).then(
+          json => {
+            sensores.innerHTML = ""
+            json.map((sensor, index) => {
+              console.log(sensor)
+              sensores.innerHTML += `<div id='sensor${index}'></div>`
               $("#sensorName").html(`Sensor: ${sensor.name}`)
-              chart1.data.datasets[0].data[index] = {x:sensor.timeStamp,y:sensor.humedad}
-              chart1.data.datasets[1].data[index] = {x:sensor.timeStamp,y:sensor.co2}
-              chart1.data.datasets[2].data[index] = {x:sensor.timeStamp,y:sensor.temperatura}
+              chart1.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
+              chart1.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
+              chart1.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
             })
             chart1.update()
-            
+
           }
         )
       } catch (error) {
-        
+
       }
     })
     barrio.polygon.on("mouseover", (e) => {
@@ -152,12 +156,12 @@ const getSensors = async () => {
     let json = await data.json();
     json.forEach((s) => {
       barrios.map(barr => {
-        
-        
+
+
         if (RayCasting(s.coords, barr.coords)) {
           // if (barr.sensores.find(e => e._id == s._id) == undefined) {
-            barr.sensores = barr.sensores.filter(e => e._id != s._id)
-            barr.sensores.push(s)
+          barr.sensores = barr.sensores.filter(e => e._id != s._id)
+          barr.sensores.push(s)
           // }
         } else {
           if (barr.sensores.find(e => e._id == s._id) != undefined) {
@@ -166,7 +170,7 @@ const getSensors = async () => {
         }
 
       })
-   
+
     });
 
     oldArrayMarkers.map((mk) => {
