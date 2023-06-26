@@ -21,10 +21,11 @@ router.get("/sensor/:id", (req,res)=>{
 
 // post sensor
 router.post("/sensor", (req,res)=>{
-    const sensor = sensorSchema(req.body)
-
-
-    sensor
+    const createdAt = new Date().toLocaleString()
+    const sensor = req.body
+    sensor.createdAt = createdAt
+    
+    sensorSchema(sensor)
         .save()
         .then((data)=> res.json(data))
         .catch((error)=> res.json({"message": error}))

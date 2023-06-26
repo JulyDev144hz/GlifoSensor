@@ -165,12 +165,29 @@
 
 .datosSensor .sensor {
   width: 75%;
-  margin-top: 20px;
+  margin: 20px;
   background: rgba(255, 255, 255, 0.76);
 }
 
 .datosSensor .sensor h6 {
   text-align: center;
   font-size: 30px;
+}
+
+.datosSensor #sensores {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 /*# sourceMappingURL=styles.css.map */

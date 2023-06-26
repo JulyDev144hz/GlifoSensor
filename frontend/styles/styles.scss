@@ -130,7 +130,14 @@
         font-size: 30px;
     }
     width: 75%;
-    margin-top: 20px;
-      background: rgba(255, 255, 255, 0.76);
+    margin: 20px;
+    background: rgba(255, 255, 255, 0.76);
+  }
+  #sensores{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 }

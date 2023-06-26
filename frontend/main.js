@@ -110,22 +110,62 @@ setTimeout(() => {
     barrio.polygon.on("click", e => {
       window.location = "#datosSensor"
       try {
-        let id = barrio.sensores[0]._id
-        fetch("http://localhost:3000/historySensor/" + id).then(data => data.json()).then(
-          json => {
-            sensores.innerHTML = ""
-            json.map((sensor, index) => {
-              console.log(sensor)
-              sensores.innerHTML += `<div id='sensor${index}'></div>`
-              $("#sensorName").html(`Sensor: ${sensor.name}`)
-              chart1.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
-              chart1.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
-              chart1.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
-            })
-            chart1.update()
+        sensores.innerHTML = ""
+        barrio.sensores.map((sns, indx) => {
+          let id = sns._id
+          fetch("http://localhost:3000/historySensor/" + id).then(data => data.json()).then(
+            json => {
+              sensores.innerHTML += `
+              <div class='sensor' id='sensor${indx}'>
+                <h6>Sensor: ${sns.name}</h6>
+                <canvas id="ChartSensor${indx}"></canvas>
+              </div>`
+              let contexto = document.getElementById(`ChartSensor${indx}`)
+              let config = {
+                type : "line",
+                data: {
+                  datasets: [
+                    {
+                      label: "Humedad",
+                      data: [],
+                      tension: 0.4,
+                    },
+                    {
+                      label: "Co2",
+                      data: [],
+                      tension: 0.4,
+                    },
+                    {
+                      label: "Temperatura",
+                      data: [],
+                      tension: 0.4,
+                    },
+                  ],
+                },
+              };
 
-          }
-        )
+              
+              // json.map((sensor, index) => {
+              //   config.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
+              //   config.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
+              //   config.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
+              // })
+              
+              // if (json.length <2 ){
+              // }
+              
+              config = cfg
+              if (indx == 1){
+                new Chart(contexto, config)
+                console.log(contexto, cfg )
+                
+              }else{
+                new Chart(contexto, cfg)
+
+              }
+            }
+          )
+        })
       } catch (error) {
 
       }
