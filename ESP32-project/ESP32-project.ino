@@ -10,16 +10,16 @@
 #define DHTTYPE DHT11
 
 // Aca va el nombre del sensor
-char* nombre = "Nuevo Sensor";
+char* nombre = "jose";
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const String ipServer = "192.168.2.19" ;
+const String ipServer = "192.168.2.44" ;
 
 const char* ssid = "BA Escuela";
 const char* password =  "";
 
-float coords[2] = {-34.554966,-58.361135};
+float coords[2] = {-34.6036951,-58.3816889};
 
 void setup() {
   // put your setup code here, to run once:
@@ -118,7 +118,7 @@ void loop() {
  
  }
  
-  delay(5000);  //Send a request every 5 seconds
+  delay(60000);  //Send a request every 5 seconds
 }
 
 void requestHTTP(String url, String request , String json){

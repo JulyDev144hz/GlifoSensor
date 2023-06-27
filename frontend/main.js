@@ -43,7 +43,7 @@ const defaultcfg = {
     ],
   },
 };
-let chart1 = new Chart(ctx, defaultcfg);
+let chartPromedio = new Chart(ctx, defaultcfg);
 // [0,1,2,3,4,5,6].map(e=>{
 //   humedad.data.datasets[0].data[e] = {x:"2016/12/"+e,y:e*50}
 
