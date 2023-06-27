@@ -52,3 +52,18 @@ $("#so2Info").on("click", e => {
 
 })
 
+
+const types = document.querySelectorAll(".type");
+
+    types.forEach((type) => {
+      const div = type.querySelector(".info");
+
+      type.addEventListener("mouseover", () => {
+        div.style.display = "block";
+      });
+
+      type.addEventListener("mouseout", () => {
+        div.style.display = "none";
+      });
+    });
+

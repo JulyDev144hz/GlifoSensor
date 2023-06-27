@@ -102,75 +102,89 @@ setTimeout(() => {
     let sumTotal = 0;
 
     barrio.sensores.map((s) => (sumTotal += s.temperatura));
-    if (sumTotal / barrio.sensores.length > 30) {
-      barrio.polygon.setStyle({ color: "red" });
-    }
+
+    barrio.polygon.setStyle({ color: "#009c4c" });
 
     barrio.polygon.addTo(map);
     barrio.polygon.on("click", (e) => {
       window.location = "#datosSensor";
       try {
-        let historialOrdenado = barrio.historialSensores.sort((a, b) => {
-          return (
-            Date.parse(convertLocaleToDate(a.timeStamp)) -
-            Date.parse(convertLocaleToDate(b.timeStamp))
-          );
-        });
-        let promedios = [];
-        let reintentar = true;
-        let puntosPromedios = [];
-        let promedio = [];
-        while (reintentar) {
-          promedio = [];
-          promedio.push(historialOrdenado[0]);
-          historialOrdenado.map((dato) => {
-            if (
-              DentroDeXMinutos(
-                Date.parse(convertLocaleToDate(historialOrdenado[0].timeStamp)),
-                Date.parse(convertLocaleToDate(dato.timeStamp)),
-                2
-              )
-            ) {
-              promedio.push(dato);
-              reintentar = false;
-            } else {
-              reintentar = true;
-            }
+        if (barrio.historialSensores.length > 1) {
+          let historialOrdenado = barrio.historialSensores.sort((a, b) => {
+            return (
+              Date.parse(convertLocaleToDate(a.timeStamp)) -
+              Date.parse(convertLocaleToDate(b.timeStamp))
+            );
           });
+          let promedios = [];
+          let reintentar = true;
+          let puntosPromedios = [];
+          let promedio = [];
 
-          historialOrdenado = historialOrdenado.filter(
-            (el) => !promedio.includes(el)
-          );
-          puntosPromedios.push(promedio);
+          while (reintentar) {
+            promedio = [];
+            promedio.push(historialOrdenado[0]);
+            historialOrdenado.map((dato) => {
+              if (
+                DentroDeXMinutos(
+                  Date.parse(
+                    convertLocaleToDate(historialOrdenado[0].timeStamp)
+                  ),
+                  Date.parse(convertLocaleToDate(dato.timeStamp)),
+                  2
+                )
+              ) {
+                promedio.push(dato);
+                reintentar = false;
+              } else {
+                reintentar = true;
+              }
+            });
+
+            historialOrdenado = historialOrdenado.filter(
+              (el) => !promedio.includes(el)
+            );
+            puntosPromedios.push(promedio);
+          }
+
+          puntosPromedios.map((punto, index) => {
+            let humedadTotal = 0;
+            let temperaturaTotal = 0;
+            let co2Total = 0;
+            punto.map((s) => {
+              humedadTotal += s.humedad;
+              temperaturaTotal += s.temperatura;
+              co2Total += s.co2;
+            });
+            let humedadPromedio = humedadTotal / punto.length;
+            let temperaturaPromedio = temperaturaTotal / punto.length;
+            let co2Promedio = co2Total / punto.length;
+            let time = punto[0].timeStamp;
+            promedios.push({
+              humedad: humedadPromedio,
+              temperatura: temperaturaPromedio,
+              co2: co2Promedio,
+              timeStamp: time,
+            });
+          });
+          promedios.map((punto, index) => {
+            chartPromedio.config.data.datasets[0].data[index] = {
+              x: punto.timeStamp,
+              y: punto.humedad,
+            };
+            chartPromedio.config.data.datasets[1].data[index] = {
+              x: punto.timeStamp,
+              y: punto.co2,
+            };
+            chartPromedio.config.data.datasets[2].data[index] = {
+              x: punto.timeStamp,
+              y: punto.temperatura,
+            };
+          });
+          chartPromedio.update();
+        }else{
+          alert('Mostrar Graficos Vacios')
         }
-
-        puntosPromedios.map((punto, index) => {
-          let humedadTotal = 0;
-          let temperaturaTotal = 0;
-          let co2Total = 0;
-          punto.map((s) => {
-            humedadTotal += s.humedad;
-            temperaturaTotal += s.temperatura;
-            co2Total += s.co2;
-          });
-          let humedadPromedio = humedadTotal / punto.length;
-          let temperaturaPromedio = temperaturaTotal / punto.length;
-          let co2Promedio = co2Total / punto.length;
-          let time = punto[0].timeStamp;
-          promedios.push({
-            humedad: humedadPromedio,
-            temperatura: temperaturaPromedio,
-            co2: co2Promedio,
-            timeStamp: time,
-          });
-        });
-        promedios.map((punto, index) => {
-          chartPromedio.config.data.datasets[0].data[index] = { x: punto.timeStamp, y:punto.humedad};
-          chartPromedio.config.data.datasets[1].data[index] = { x: punto.timeStamp, y:punto.co2};
-          chartPromedio.config.data.datasets[2].data[index] = { x: punto.timeStamp, y:punto.temperatura};
-        });
-        chartPromedio.update()
-
         sensores.innerHTML = "";
         chartSensors = [];
         barrio.sensores.map(async (sns, indx) => {
