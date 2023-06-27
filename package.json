@@ -12,6 +12,7 @@
   },
   "keywords": [],
   "author": "",
+  "engines": {"node" : "14.x"},
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/JulyDev144hz/GlifoSensor/issues"
