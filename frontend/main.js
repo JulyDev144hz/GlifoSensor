@@ -50,14 +50,13 @@ let chartPromedio = new Chart(ctx, defaultcfg);
 // })
 // humedad.update()
 
-
 class Barrio {
   constructor(name, coords) {
     this.name = name;
     this.coords = coords;
     this.polygon = L.polygon(this.coords);
     this.sensores = [];
-    this.historialSensores = []
+    this.historialSensores = [];
   }
 }
 
@@ -111,8 +110,69 @@ setTimeout(() => {
     barrio.polygon.on("click", (e) => {
       window.location = "#datosSensor";
       try {
+        let historialOrdenado = barrio.historialSensores.sort((a, b) => {
+          return (
+            Date.parse(convertLocaleToDate(a.timeStamp)) -
+            Date.parse(convertLocaleToDate(b.timeStamp))
+          );
+        });
+        let promedios = [];
+        let reintentar = true;
+        let puntosPromedios = [];
+        let promedio = [];
+        while (reintentar) {
+          promedio = [];
+          promedio.push(historialOrdenado[0]);
+          historialOrdenado.map((dato) => {
+            if (
+              DentroDeXMinutos(
+                Date.parse(convertLocaleToDate(historialOrdenado[0].timeStamp)),
+                Date.parse(convertLocaleToDate(dato.timeStamp)),
+                2
+              )
+            ) {
+              promedio.push(dato);
+              reintentar = false;
+            } else {
+              reintentar = true;
+            }
+          });
+
+          historialOrdenado = historialOrdenado.filter(
+            (el) => !promedio.includes(el)
+          );
+          puntosPromedios.push(promedio);
+        }
+
+        puntosPromedios.map((punto, index) => {
+          let humedadTotal = 0;
+          let temperaturaTotal = 0;
+          let co2Total = 0;
+          punto.map((s) => {
+            humedadTotal += s.humedad;
+            temperaturaTotal += s.temperatura;
+            co2Total += s.co2;
+          });
+          let humedadPromedio = humedadTotal / punto.length;
+          let temperaturaPromedio = temperaturaTotal / punto.length;
+          let co2Promedio = co2Total / punto.length;
+          let time = punto[0].timeStamp;
+          promedios.push({
+            humedad: humedadPromedio,
+            temperatura: temperaturaPromedio,
+            co2: co2Promedio,
+            timeStamp: time,
+          });
+        });
+        promedios.map((punto, index) => {
+          chartPromedio.config.data.datasets[0].data[index] = { x: punto.timeStamp, y:punto.humedad};
+          chartPromedio.config.data.datasets[1].data[index] = { x: punto.timeStamp, y:punto.co2};
+          chartPromedio.config.data.datasets[2].data[index] = { x: punto.timeStamp, y:punto.temperatura};
+        });
+        chartPromedio.update()
+
         sensores.innerHTML = "";
-        chartSensors = []
+        chartSensors = [];
         barrio.sensores.map(async (sns, indx) => {
           let id = sns._id;
           sensores.innerHTML += `
@@ -142,24 +202,36 @@ setTimeout(() => {
               ],
             },
           };
-          config.data.datasets[0].data, config.data.datasets[1].data, config.data.datasets[2].data = []
-
+          config.data.datasets[0].data,
+            config.data.datasets[1].data,
+            (config.data.datasets[2].data = []);
 
           fetch("http://localhost:3000/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
-
               json.map((sensor, index) => {
-                config.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
-                config.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
-                config.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
-              })
+                config.data.datasets[0].data[index] = {
+                  x: sensor.timeStamp,
+                  y: sensor.humedad,
+                };
+                config.data.datasets[1].data[index] = {
+                  x: sensor.timeStamp,
+                  y: sensor.co2,
+                };
+                config.data.datasets[2].data[index] = {
+                  x: sensor.timeStamp,
+                  y: sensor.temperatura,
+                };
+              });
 
               // setTimeout(() => {
-              let chart = new Chart(document.getElementById("chartSensor" + (indx + 1)), config)
+              let chart = new Chart(
+                document.getElementById("chartSensor" + (indx + 1)),
+                config
+              );
 
-              chartSensors.push({ chart: chart, id: id })
-              chart.update()
+              chartSensors.push({ chart: chart, id: id });
+              chart.update();
               // }, 200);
             });
         });
@@ -181,23 +253,46 @@ setTimeout(() => {
     });
   });
 }, 100);
+
+const DentroDeXMinutos = (time1, time2, x) => {
+  return time1 < time2 && time2 < time1 + x * 60 * 1000;
+};
+
+const convertLocaleToDate = (time) => {
+  time = time.split(" ");
+  time[0] = time[0].split("/");
+  time[0] = [time[0][1], time[0][0], time[0][2]].join("/");
+  time = time.join(" ");
+  return time;
+};
+
 const getSensors = async () => {
   try {
-    
     let dataHistory = await fetch("http://localhost:3000/historySensor");
-    let jsonHistory = await dataHistory.json()
+    let jsonHistory = await dataHistory.json();
 
     chartSensors.map((sensorChart, index) => {
-      sensorChart.chart.config.data.datasets[0].data = []
-      sensorChart.chart.config.data.datasets[1].data = []
-      sensorChart.chart.config.data.datasets[2].data = []
-      jsonHistory.filter(x => x.idSensor == sensorChart.id).map((sensor, index) => {
-        sensorChart.chart.config.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
-        sensorChart.chart.config.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
-        sensorChart.chart.config.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
-      })
-      sensorChart.chart.update()
-    })
+      sensorChart.chart.config.data.datasets[0].data = [];
+      sensorChart.chart.config.data.datasets[1].data = [];
+      sensorChart.chart.config.data.datasets[2].data = [];
+      jsonHistory
+        .filter((x) => x.idSensor == sensorChart.id)
+        .map((sensor, index) => {
+          sensorChart.chart.config.data.datasets[0].data[index] = {
+            x: sensor.timeStamp,
+            y: sensor.humedad,
+          };
+          sensorChart.chart.config.data.datasets[1].data[index] = {
+            x: sensor.timeStamp,
+            y: sensor.co2,
+          };
+          sensorChart.chart.config.data.datasets[2].data[index] = {
+            x: sensor.timeStamp,
+            y: sensor.temperatura,
+          };
+        });
+      sensorChart.chart.update();
+    });
 
     let data = await fetch("http://localhost:3000/sensor");
     let json = await data.json();
@@ -206,12 +301,15 @@ const getSensors = async () => {
         if (RayCasting(s.coords, barr.coords)) {
           // if (barr.sensores.find(e => e._id == s._id) == undefined) {
           barr.sensores = barr.sensores.filter((e) => e._id != s._id);
-          barr.historialSensores = barr.historialSensores.filter(x => x.idSensor != s._id)
-          jsonHistory.filter(x => x.idSensor == s._id).map(dato =>{
-            barr.historialSensores.push(dato)
-          })
-          console.log(barr.historialSensores)
-          
+          barr.historialSensores = barr.historialSensores.filter(
+            (x) => x.idSensor != s._id
+          );
+          jsonHistory
+            .filter((x) => x.idSensor == s._id)
+            .map((dato) => {
+              barr.historialSensores.push(dato);
+            });
+
           barr.sensores.push(s);
           // }
         } else {
@@ -221,7 +319,6 @@ const getSensors = async () => {
         }
       });
     });
-
   } catch (error) {
     console.error(error);
   }
