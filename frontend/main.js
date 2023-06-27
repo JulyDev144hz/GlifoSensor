@@ -55,7 +55,7 @@ class Barrio {
     this.name = name;
     this.coords = coords;
     this.polygon = L.polygon(this.coords);
-    this.sensores = []
+    this.sensores = [];
   }
 }
 
@@ -98,95 +98,63 @@ $.getJSON("./barrios.geojson.json", (json) => {
 
 setTimeout(() => {
   barrios.forEach((barrio) => {
+    let sumTotal = 0;
 
-    let sumTotal = 0
-
-    barrio.sensores.map(s => sumTotal += s.temperatura)
+    barrio.sensores.map((s) => (sumTotal += s.temperatura));
     if (sumTotal / barrio.sensores.length > 30) {
-      barrio.polygon.setStyle({ color: 'red' });
+      barrio.polygon.setStyle({ color: "red" });
     }
 
-    barrio.polygon.addTo(map)
-    barrio.polygon.on("click", e => {
-      window.location = "#datosSensor"
+    barrio.polygon.addTo(map);
+    barrio.polygon.on("click", (e) => {
+      window.location = "#datosSensor";
       try {
-        sensores.innerHTML = ""
-        barrio.sensores.map((sns, indx) => {
-          let id = sns._id
-          fetch("http://localhost:3000/historySensor/" + id).then(data => data.json()).then(
-            json => {
-              sensores.innerHTML += `
-              <div class='sensor' id='sensor${indx}'>
-                <h6>Sensor: ${sns.name}</h6>
-                <canvas id="ChartSensor${indx}"></canvas>
-              </div>`
-              let contexto = document.getElementById(`ChartSensor${indx}`)
-              let config = {
-                type : "line",
-                data: {
-                  datasets: [
-                    {
-                      label: "Humedad",
-                      data: [],
-                      tension: 0.4,
-                    },
-                    {
-                      label: "Co2",
-                      data: [],
-                      tension: 0.4,
-                    },
-                    {
-                      label: "Temperatura",
-                      data: [],
-                      tension: 0.4,
-                    },
-                  ],
-                },
-              };
+        sensores.innerHTML = "";
+        barrio.sensores.map(async (sns, indx) => {
+          let id = sns._id;
+          sensores.innerHTML += `
+          <div class="sensor">
+            <h6>${sns.name}</h6>
+            <canvas id="chartSensor${indx+1}"></canvas>
+          </div>`;
 
-              
+          setTimeout(() => {
+            new Chart(document.getElementById("chartSensor"+(indx+1)), cfg)
+           
+          }, (indx+1)*1);
+
+          fetch("http://localhost:3000/historySensor/" + id)
+            .then((data) => data.json())
+            .then((json) => {
               // json.map((sensor, index) => {
               //   config.data.datasets[0].data[index] = { x: sensor.timeStamp, y: sensor.humedad }
               //   config.data.datasets[1].data[index] = { x: sensor.timeStamp, y: sensor.co2 }
               //   config.data.datasets[2].data[index] = { x: sensor.timeStamp, y: sensor.temperatura }
               // })
-              
               // if (json.length <2 ){
               // }
-              
-              config = cfg
-              if (indx == 1){
-                new Chart(contexto, config)
-                console.log(contexto, cfg )
-                
-              }else{
-                new Chart(contexto, cfg)
-
-              }
-            }
-          )
-        })
+            });
+        });
       } catch (error) {
-
+        console.error(error);
       }
-    })
+    });
     barrio.polygon.on("mouseover", (e) => {
-
       try {
-        updateData(barrio.name, barrio.sensores[0].temperatura, barrio.sensores[0].humedad, barrio.sensores[0].updatedAt);
-
+        updateData(
+          barrio.name,
+          barrio.sensores[0].temperatura,
+          barrio.sensores[0].humedad,
+          barrio.sensores[0].updatedAt
+        );
       } catch (error) {
         updateData(barrio.name, 1, 1, "sin registro");
-
       }
     });
   });
 }, 100);
 
-
-
 const getSensors = async () => {
-
   try {
     oldArrayMarkers = arrayMarkers;
 
@@ -195,22 +163,18 @@ const getSensors = async () => {
     let data = await fetch("http://localhost:3000/sensor");
     let json = await data.json();
     json.forEach((s) => {
-      barrios.map(barr => {
-
-
+      barrios.map((barr) => {
         if (RayCasting(s.coords, barr.coords)) {
           // if (barr.sensores.find(e => e._id == s._id) == undefined) {
-          barr.sensores = barr.sensores.filter(e => e._id != s._id)
-          barr.sensores.push(s)
+          barr.sensores = barr.sensores.filter((e) => e._id != s._id);
+          barr.sensores.push(s);
           // }
         } else {
-          if (barr.sensores.find(e => e._id == s._id) != undefined) {
-            barr.sensores = barr.sensores.filter(e => e._id != s._id)
+          if (barr.sensores.find((e) => e._id == s._id) != undefined) {
+            barr.sensores = barr.sensores.filter((e) => e._id != s._id);
           }
         }
-
-      })
-
+      });
     });
 
     oldArrayMarkers.map((mk) => {
@@ -219,9 +183,8 @@ const getSensors = async () => {
 
     oldArrayMarkers = [];
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-
 };
 
 const updateData = (nombre, temperatura, humedad, actualizado) => {
@@ -239,4 +202,3 @@ getSensors();
 setInterval(() => {
   getSensors();
 }, 5000);
-
