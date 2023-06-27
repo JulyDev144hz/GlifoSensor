@@ -1,4 +1,4 @@
-const userRoutes = require("./routes/user")
+
 const sensorRoutes = require("./routes/sensor")
 const historySensor = require('./routes/historySensor')
 const morgan = require("morgan")
@@ -6,7 +6,7 @@ const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
 require("dotenv").config()
-
+const path = require('path')
 
 const app = express()
 app.use(morgan("tiny"))
@@ -16,14 +16,14 @@ const port = process.env.PORT || 3000
 //middleware
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
-app.use("/",userRoutes)
+app.use('/public', express.static('./public'))
 app.use("/",sensorRoutes)
 app.use("/", historySensor)
 
 //routes
 
 app.get("/",(req,res)=>{
-    res.send("Welcome")
+    res.sendFile(path.resolve(__dirname+'/../public/index.html'))
 })
 
 
