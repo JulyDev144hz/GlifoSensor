@@ -183,7 +183,7 @@ setTimeout(() => {
           });
           chartPromedio.update();
         }else{
-          alert('Mostrar Graficos Vacios.')
+          alert('Mostrar Graficos Vacios...')
         }
         sensores.innerHTML = "";
         chartSensors = [];
