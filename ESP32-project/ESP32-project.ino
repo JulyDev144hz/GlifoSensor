@@ -10,7 +10,7 @@
 #define DHTTYPE DHT11
 
 // Aca va el nombre del sensor
-char* nombre = "jose";
+char* nombre = "Et 36";
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -19,7 +19,7 @@ const String ipServer = "192.168.2.44" ;
 const char* ssid = "BA Escuela";
 const char* password =  "";
 
-float coords[2] = {-34.6036951,-58.3816889};
+float coords[2] = {-34.5599051,-58.4941941};
 
 void setup() {
   // put your setup code here, to run once:
@@ -39,6 +39,8 @@ void setup() {
 }
 
 void loop() {
+  //esp_sleep_enable_timer_wakeup(60*1000000);
+  
   // put your main code here, to run repeatedly:
 
   //int chk = DHT11.read(DHT11PIN);
@@ -117,7 +119,8 @@ void loop() {
     Serial.println("Error in WiFi connection");   
  
  }
- 
+  // esp_deep_sleep_start();
+  
   delay(60000);  //Send a request every 5 seconds
 }
 
@@ -146,7 +149,7 @@ void requestHTTP(String url, String request , String json){
       
       
    }
-
+   
    http.end();
-  
+   
 }

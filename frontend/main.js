@@ -50,8 +50,6 @@ let chartPromedio = new Chart(ctx, defaultcfg);
 // })
 // humedad.update()
 
-let arrayMarkers = [];
-let marker;
 
 class Barrio {
   constructor(name, coords) {
@@ -59,6 +57,7 @@ class Barrio {
     this.coords = coords;
     this.polygon = L.polygon(this.coords);
     this.sensores = [];
+    this.historialSensores = []
   }
 }
 
@@ -182,13 +181,12 @@ setTimeout(() => {
     });
   });
 }, 100);
-
 const getSensors = async () => {
   try {
-
-
+    
     let dataHistory = await fetch("http://localhost:3000/historySensor");
     let jsonHistory = await dataHistory.json()
+
     chartSensors.map((sensorChart, index) => {
       sensorChart.chart.config.data.datasets[0].data = []
       sensorChart.chart.config.data.datasets[1].data = []
@@ -208,6 +206,12 @@ const getSensors = async () => {
         if (RayCasting(s.coords, barr.coords)) {
           // if (barr.sensores.find(e => e._id == s._id) == undefined) {
           barr.sensores = barr.sensores.filter((e) => e._id != s._id);
+          barr.historialSensores = barr.historialSensores.filter(x => x.idSensor != s._id)
+          jsonHistory.filter(x => x.idSensor == s._id).map(dato =>{
+            barr.historialSensores.push(dato)
+          })
+          console.log(barr.historialSensores)
+          
           barr.sensores.push(s);
           // }
         } else {
