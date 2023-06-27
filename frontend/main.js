@@ -120,7 +120,7 @@ setTimeout(() => {
 
           setTimeout(() => {
             new Chart(document.getElementById("chartSensor"+(indx+1)), cfg)
-           
+
           }, (indx+1)*1);
 
           fetch("http://localhost:3000/historySensor/" + id)
