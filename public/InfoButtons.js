@@ -52,6 +52,11 @@ $("#so2Info").on("click", e => {
 
 })
 
+$("#toggle").on("click", e=>{
+    $(".containerCheckBox").toggleClass("active")
+    $("body").toggleClass("darkMode")
+})
+
 
 const types = document.querySelectorAll(".type");
 

@@ -22,8 +22,41 @@
 
   .containerCheckBox {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 10px;
+    top: 15px;
+    bottom: 15px;
+    width: 64px;
+    background: rgb(255, 255, 255);
+    border-radius: 20px;
+    outline: 2px solid rgb(87, 6, 87);
+    
+    &::before{
+      z-index: 2;
+      position: absolute;
+      content: "";
+      left: 2px;
+      top: 2px;
+      width: 30px;
+      bottom: 2px;
+      background: black;
+      border-radius: 50%;
+      transition: .1s;
+    }
+    &.active{
+      &::before{
+        left: 30px;
+      }
+    }
+
+    input{
+      position: absolute;
+
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      z-index: 5;
+      
+    }
   }
 }
 
@@ -138,8 +171,8 @@
         align-items: center;
         justify-items: center;
         .data_box {
-          width: 120px;
-          height: 120px;
+          width: 110px;
+          height: 110px;
           background: white;
           box-shadow: 0 0 5px rgba(0, 0, 0, 0.466) inset;
           border-radius: 20px;
@@ -199,6 +232,15 @@
       text-align: center;
       font-size: 30px;
     }
+    .msgChart{
+      width: 100%;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      text-align: center;
+    }
     width: 75%;
     margin: 20px;
     background: rgba(255, 255, 255, 0.76);
@@ -209,5 +251,40 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+  }
+}
+.hidden{
+  display: none !important;
+}
+
+/* Dark Mode */
+.darkMode{
+  .header{
+    background: linear-gradient(-135deg, #ae57c9, #3d0258);
+  }
+
+  .main{
+    .mapInfo{
+
+      .asideInfo{
+        background: linear-gradient(135deg, #3d0258, #ae57c9);
+        .nameBarrio {
+          color: white;
+        }
+        .boxes {
+          
+          .data_box {
+            background: linear-gradient(-45deg, #ae57c9, #3d0258);
+            .dataName {
+              color: #cacfca;
+            }
+          }
+        }
+      }
+    }
+
+  }
+  .datosSensor {
+    background: linear-gradient(-45deg, #ae57c9, #3d0258);
   }
 }

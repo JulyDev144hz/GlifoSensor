@@ -85,8 +85,8 @@ function RayCasting(point, vs) {
   return inside;
 }
 
-fetch("/public/barrios.json").then(data=>data.json()).then( (json) => {
-  
+fetch("/public/barrios.json").then(data => data.json()).then((json) => {
+
   json.features.forEach((barrio) => {
     let name = barrio.properties.BARRIO;
     let coords = barrio.geometry.coordinates[0][0];
@@ -111,7 +111,9 @@ setTimeout(() => {
     barrio.polygon.on("click", (e) => {
       window.location = "#datosSensor";
       try {
-        if (barrio.historialSensores.length > 1) {
+        if (barrio.historialSensores.length >= 2) {
+          $("#ChartPromedio").removeClass("hidden")
+          $("#chartError").addClass("hidden")
           let historialOrdenado = barrio.historialSensores.sort((a, b) => {
             return (
               Date.parse(convertLocaleToDate(a.timeStamp)) -
@@ -184,8 +186,17 @@ setTimeout(() => {
             };
           });
           chartPromedio.update();
-        }else{
-          alert('Mostrar Graficos Vacios...')
+        } else if (barrio.historialSensores == 1) {
+          $("#ChartPromedio").addClass("hidden")
+          $("#chartError").removeClass("hidden")
+          $("#chartError").html(`
+            Hola mondo
+          `)
+
+        } else {
+          $("#ChartPromedio").addClass("hidden")
+          $("#chartError").removeClass("hidden")
+          $("#chartError").html("No hay datos recopilados de este barrio")
         }
         sensores.innerHTML = "";
         chartSensors = [];
@@ -195,6 +206,7 @@ setTimeout(() => {
           <div class="sensor">
             <h6>Sensor: ${sns.name}</h6>
             <canvas id="chartSensor${indx + 1}"></canvas>
+            <p id="chartError${indx+1}" class="hidden msgChart"></p>
           </div>`;
           let config = {
             type: "line",
@@ -225,6 +237,7 @@ setTimeout(() => {
           fetch("/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
+
               json.map((sensor, index) => {
                 config.data.datasets[0].data[index] = {
                   x: sensor.timeStamp,
@@ -240,7 +253,6 @@ setTimeout(() => {
                 };
               });
 
-              // setTimeout(() => {
               let chart = new Chart(
                 document.getElementById("chartSensor" + (indx + 1)),
                 config
@@ -248,7 +260,15 @@ setTimeout(() => {
 
               chartSensors.push({ chart: chart, id: id });
               chart.update();
-              // }, 200);
+
+              if(json.length < 2){
+                $("#chartSensor"+(indx+1)).addClass("hidden")
+                $("#chartError"+(indx+1)).removeClass("hidden")
+                console.log(json)
+                $("#chartError"+(indx+1)).html(`
+                  Humedad : ${json[0].humedad}<br>
+                `)
+              }
             });
         });
       } catch (error) {

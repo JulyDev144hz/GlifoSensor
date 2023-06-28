@@ -22,7 +22,7 @@
     <header class="header">
       <h1 class="title">CitySensor</h1>
       <div class="containerCheckBox">
-        <input type="checkbox" name="" id="toggle" />
+        <input type="checkbox" id="toggle" />
       </div>
     </header>
     <main class="main">
@@ -103,7 +103,8 @@
         <h2 class="header title">Graficos</h2>
         <div class="sensor">
           <h6 id="sensorName">Promedio Sensores</h6>
-          <canvas id="ChartPromedio"></canvas>
+          <canvas id="ChartPromedio" class="hidden"></canvas>
+          <p class="msgChart" id="chartError">Selecciona un barrio para ver sus estadisticas</p>
         </div>
         <div id="sensores"></div>
       </div>
