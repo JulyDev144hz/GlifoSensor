@@ -60,10 +60,11 @@
   }
 }
 
+
 #map {
   z-index: 0;
 
-  .leyenda {
+  .leyenda{
     position: absolute;
     height: 50px;
     width: 50px;
@@ -286,5 +287,34 @@
   }
   .datosSensor {
     background: linear-gradient(-45deg, #ae57c9, #3d0258);
+  }
+}
+
+.infoTitle{
+  color: white;
+  margin-top: 50px;
+  font-size: 35px;
+  
+}
+#datosSensor2{
+  .medidas{
+    width: 50%;
+    display: flex;
+    justify-content: center;  
+    flex-wrap: wrap;
+    margin: 20px;
+    padding: 20px;
+    gap: 50px;
+  
+    li{
+      width: 150px;
+      background-color: rgba(255, 255, 255, 0.788);
+      text-decoration: none;
+      list-style: none;
+      border-radius: 20px;
+      height: auto;
+      padding: 10px;
+      box-shadow: 0 0 5px 1px #535050;
+    }
   }
 }

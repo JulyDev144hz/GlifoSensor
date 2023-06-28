@@ -72,3 +72,5 @@ const types = document.querySelectorAll(".type");
       });
     });
 
+
+    
