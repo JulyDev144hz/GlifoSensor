@@ -89,6 +89,7 @@ function RayCasting(point, vs) {
 fetch("/public/barrios.json").then(data=>data.json()).then( (json) => {
   
   console.log("Fetch a barrios")
+  console.log(json)
   json.features.forEach((barrio) => {
     let name = barrio.properties.BARRIO;
     let coords = barrio.geometry.coordinates[0][0];
@@ -290,6 +291,7 @@ const getSensors = async () => {
   try {
     let dataHistory = await fetch("/historySensor");
     let jsonHistory = await dataHistory.json();
+    console.log(jsonHistory)
 
     chartSensors.map((sensorChart, index) => {
       sensorChart.chart.config.data.datasets[0].data = [];
@@ -316,6 +318,7 @@ const getSensors = async () => {
 
     let data = await fetch("/sensor");
     let json = await data.json();
+    console.log(json)
     json.forEach((s) => {
       barrios.map((barr) => {
         if (RayCasting(s.coords, barr.coords)) {
