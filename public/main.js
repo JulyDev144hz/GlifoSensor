@@ -220,7 +220,7 @@ setTimeout(() => {
             config.data.datasets[1].data,
             (config.data.datasets[2].data = []);
 
-          fetch("http://localhost:3000/historySensor/" + id)
+          fetch("/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
               json.map((sensor, index) => {
@@ -282,7 +282,7 @@ const convertLocaleToDate = (time) => {
 
 const getSensors = async () => {
   try {
-    let dataHistory = await fetch("http://localhost:3000/historySensor");
+    let dataHistory = await fetch("/historySensor");
     let jsonHistory = await dataHistory.json();
 
     chartSensors.map((sensorChart, index) => {
@@ -308,7 +308,7 @@ const getSensors = async () => {
       sensorChart.chart.update();
     });
 
-    let data = await fetch("http://localhost:3000/sensor");
+    let data = await fetch("/sensor");
     let json = await data.json();
     json.forEach((s) => {
       barrios.map((barr) => {
