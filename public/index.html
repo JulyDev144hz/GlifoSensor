@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>CitySensor</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="/public/styles/styles.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="shortcut icon" href="/public/favicon.png" type="image/x-icon">
+  </head>
+
+  <body>
+    <header class="header">
+      <h1 class="title">CitySensor</h1>
+      <div class="containerCheckBox">
+        <input type="checkbox" name="" id="toggle" />
+      </div>
+    </header>
+    <main class="main">
+      <div class="mapInfo">
+        <aside class="asideInfo">
+          <h2 class="titleDatosReportados">DATOS REPORTADOS</h2>
+          <h3 class="nameBarrio" id="name">VILLA CRESPO</h3>
+          <p id="updatedAt">Actualizado: sin registro</p>
+          <div class="boxes">
+            <div class="data_box">
+              <h4 class="dataName">CO2</h4>
+              <p id="co2">687</p>
+              <button class="masInfo" id="co2Info">Mas Info</button>
+            </div>
+            <div class="data_box">
+              <h4 class="dataName">°C</h4>
+              <p id="temp">0</p>
+              <button class="masInfo" id="tempInfo">Mas Info</button>
+            </div>
+            <div class="data_box">
+              <h4 class="dataName">HUM</h4>
+              <p id="hum">75%</p>
+              <button class="masInfo" id="humInfo">Mas Info</button>
+            </div>
+            <div class="data_box">
+              <h4 class="dataName">O3</h4>
+              <p>0.070</p>
+              <button class="masInfo" id="03Info">Mas Info</button>
+            </div>
+            <div class="data_box">
+              <h4 class="dataName">UV</h4>
+              <p>5</p>
+              <button class="masInfo" id="uvInfo">Mas Info</button>
+            </div>
+            <div class="data_box">
+              <h4 class="dataName">PM2.5</h4>
+              <p>100</p>
+              <button class="masInfo" id="so2Info">Mas Info</button>
+            </div>
+          </div>
+        </aside>
+
+        <div id="map">
+          <div class="leyenda">
+            <div class="type">
+              <p>Dañino</p>
+              <div class="violeta"></div>
+              <div class="info">
+                Permanecer poco tiempo en esta zona podria producir daños en la
+                salud
+              </div>
+            </div>
+            <div class="type">
+              <p>Peligroso</p>
+              <div class="rojo"></div>
+              <div class="info">
+                Permanecer mucho tiempo en esta zona podria producir daños en la
+                salud
+              </div>
+            </div>
+            <div class="type">
+              <p>Normal</p>
+              <div class="naranja"></div>
+              <div class="info">
+                No refleja problemas en la salud, aun así no es 100% sano
+              </div>
+            </div>
+            <div class="type">
+              <p>Bueno</p>
+              <div class="verde"></div>
+              <div class="info">Zona de la ciudad muy poco contaminada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="datosSensor" id="datosSensor">
+        <h2 class="header title">Graficos</h2>
+        <div class="sensor">
+          <h6 id="sensorName">Promedio Sensores</h6>
+          <canvas id="ChartPromedio"></canvas>
+        </div>
+        <div id="sensores"></div>
+      </div>
+    </main>
+  </body>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+    crossorigin=""
+  ></script>
+  <script src="/public/main.js"></script>
+  <script src="/public/InfoButtons.js"></script>
+</html>
