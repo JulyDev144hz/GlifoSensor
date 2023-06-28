@@ -7,6 +7,8 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
+console.log("Programa iniciado")
+
 const sensores = document.getElementById("sensores");
 let chartSensors = [];
 
@@ -85,6 +87,8 @@ function RayCasting(point, vs) {
 }
 
 fetch("/public/barrios.json").then(data=>data.json()).then( (json) => {
+  
+  console.log("Fetch a barrios")
   json.features.forEach((barrio) => {
     let name = barrio.properties.BARRIO;
     let coords = barrio.geometry.coordinates[0][0];
@@ -95,6 +99,7 @@ fetch("/public/barrios.json").then(data=>data.json()).then( (json) => {
     let newBarrio = new Barrio(name, coords);
     barrios.push(newBarrio);
   });
+  console.log("Fetch terminado")
 });
 
 setTimeout(() => {
@@ -281,6 +286,7 @@ const convertLocaleToDate = (time) => {
 };
 
 const getSensors = async () => {
+  console.log("Iniciado GetSensors")
   try {
     let dataHistory = await fetch("/historySensor");
     let jsonHistory = await dataHistory.json();
