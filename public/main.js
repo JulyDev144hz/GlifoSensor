@@ -84,7 +84,7 @@ function RayCasting(point, vs) {
   return inside;
 }
 
-$.getJSON("/public/barrios.geojson.json", (json) => {
+fetch("/public/barrios.json").then(data=>data.json()).then( (json) => {
   json.features.forEach((barrio) => {
     let name = barrio.properties.BARRIO;
     let coords = barrio.geometry.coordinates[0][0];
