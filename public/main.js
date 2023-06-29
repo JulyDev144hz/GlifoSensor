@@ -7,7 +7,6 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-
 const sensores = document.getElementById("sensores");
 let chartSensors = [];
 
@@ -85,19 +84,20 @@ function RayCasting(point, vs) {
   return inside;
 }
 
-fetch("/public/barrios.json").then(data => data.json()).then((json) => {
+fetch("/public/barrios.json")
+  .then((data) => data.json())
+  .then((json) => {
+    json.features.forEach((barrio) => {
+      let name = barrio.properties.BARRIO;
+      let coords = barrio.geometry.coordinates[0][0];
+      coords.forEach((coord, index) => {
+        coords[index] = [coord[1], coord[0]];
+      });
 
-  json.features.forEach((barrio) => {
-    let name = barrio.properties.BARRIO;
-    let coords = barrio.geometry.coordinates[0][0];
-    coords.forEach((coord, index) => {
-      coords[index] = [coord[1], coord[0]];
+      let newBarrio = new Barrio(name, coords);
+      barrios.push(newBarrio);
     });
-
-    let newBarrio = new Barrio(name, coords);
-    barrios.push(newBarrio);
   });
-});
 
 setTimeout(() => {
   barrios.forEach((barrio) => {
@@ -112,8 +112,8 @@ setTimeout(() => {
       window.location = "#datosSensor";
       try {
         if (barrio.historialSensores.length >= 2) {
-          $("#ChartPromedio").removeClass("hidden")
-          $("#chartError").addClass("hidden")
+          $("#ChartPromedio").removeClass("hidden");
+          $("#chartError").addClass("hidden");
           let historialOrdenado = barrio.historialSensores.sort((a, b) => {
             return (
               Date.parse(convertLocaleToDate(a.timeStamp)) -
@@ -126,6 +126,7 @@ setTimeout(() => {
           let promedio = [];
 
           while (reintentar) {
+            if(historialOrdenado.length == 0) break
             promedio = [];
             promedio.push(historialOrdenado[0]);
             historialOrdenado.map((dato) => {
@@ -144,12 +145,14 @@ setTimeout(() => {
                 reintentar = true;
               }
             });
+            console.log(promedio)
 
             historialOrdenado = historialOrdenado.filter(
               (el) => !promedio.includes(el)
             );
             puntosPromedios.push(promedio);
           }
+
 
           puntosPromedios.map((punto, index) => {
             let humedadTotal = 0;
@@ -187,16 +190,15 @@ setTimeout(() => {
           });
           chartPromedio.update();
         } else if (barrio.historialSensores == 1) {
-          $("#ChartPromedio").addClass("hidden")
-          $("#chartError").removeClass("hidden")
+          $("#ChartPromedio").addClass("hidden");
+          $("#chartError").removeClass("hidden");
           $("#chartError").html(`
             Hola mondo
-          `)
-
+          `);
         } else {
-          $("#ChartPromedio").addClass("hidden")
-          $("#chartError").removeClass("hidden")
-          $("#chartError").html("No hay datos recopilados de este barrio")
+          $("#ChartPromedio").addClass("hidden");
+          $("#chartError").removeClass("hidden");
+          $("#chartError").html("No hay datos recopilados de este barrio");
         }
         sensores.innerHTML = "";
         chartSensors = [];
@@ -206,7 +208,7 @@ setTimeout(() => {
           <div class="sensor">
             <h6>Sensor: ${sns.name}</h6>
             <canvas id="chartSensor${indx + 1}"></canvas>
-            <p id="chartError${indx+1}" class="hidden msgChart"></p>
+            <p id="chartError${indx + 1}" class="hidden msgChart"></p>
           </div>`;
           let config = {
             type: "line",
@@ -237,7 +239,6 @@ setTimeout(() => {
           fetch("/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
-
               json.map((sensor, index) => {
                 config.data.datasets[0].data[index] = {
                   x: sensor.timeStamp,
@@ -261,13 +262,12 @@ setTimeout(() => {
               chartSensors.push({ chart: chart, id: id });
               chart.update();
 
-              if(json.length < 2){
-                $("#chartSensor"+(indx+1)).addClass("hidden")
-                $("#chartError"+(indx+1)).removeClass("hidden")
-                console.log(json)
-                $("#chartError"+(indx+1)).html(`
+              if (json.length < 2) {
+                $("#chartSensor" + (indx + 1)).addClass("hidden");
+                $("#chartError" + (indx + 1)).removeClass("hidden");
+                $("#chartError" + (indx + 1)).html(`
                   Humedad : ${json[0].humedad}<br>
-                `)
+                `);
               }
             });
         });
@@ -277,21 +277,31 @@ setTimeout(() => {
     });
     barrio.polygon.on("mouseover", (e) => {
       try {
+        
+        let sensoresOrdenados = barrio.historialSensores.sort((b, a) => {
+          return (
+            Date.parse(convertLocaleToDate(a.timeStamp)) -
+            Date.parse(convertLocaleToDate(b.timeStamp))
+            );
+          });
+          console.log(sensoresOrdenados)
+
         updateData(
           barrio.name,
           barrio.sensores[0].temperatura,
           barrio.sensores[0].humedad,
+          barrio.sensores[0].co2,
           barrio.sensores[0].updatedAt
         );
       } catch (error) {
-        updateData(barrio.name, 1, 1, "sin registro");
+        updateData(barrio.name, "?", "?", "?", "sin registro");
       }
     });
   });
-}, 3000);
+}, 100);
 
 const DentroDeXMinutos = (time1, time2, x) => {
-  return time1 < time2 && time2 < time1 + x * 60 * 1000;
+  return time1 <= time2 && time2 <= time1 + x * 60 * 1000;
 };
 
 const convertLocaleToDate = (time) => {
@@ -360,12 +370,14 @@ const getSensors = async () => {
   }
 };
 
-const updateData = (nombre, temperatura, humedad, actualizado) => {
+const updateData = (nombre, temperatura, humedad, co2, actualizado) => {
   let dataNombre = document.getElementById("name");
+  let dataco2 = document.getElementById("co2");
   let updatedAt = document.getElementById("updatedAt");
   let dataTemperatura = document.getElementById("temp");
   let dataHumedad = document.getElementById("hum");
   dataNombre.innerHTML = nombre;
+  dataco2.innerHTML = co2;
   updatedAt.innerHTML = `Actualizado: ${actualizado}`;
   dataTemperatura.innerHTML = temperatura;
   dataHumedad.innerHTML = humedad;
