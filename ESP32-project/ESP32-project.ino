@@ -14,7 +14,7 @@ char* nombre = "Et 36";
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const String ipServer = "192.168.2.44" ;
+const String ipServer = "192.168.2.41" ;
 
 const char* ssid = "BA Escuela";
 const char* password =  "";
@@ -87,12 +87,12 @@ void loop() {
      deserializeJson(doc, jsonResponse);
      bool found = false;
      for(int i = 0; i<doc.size(); i++){
-        found = false;
         if (doc[i]["name"] == nombre){
             found = true;
             const String id = doc[i]["_id"];
             http.end();
             String url = "http://"+ipServer+":3000/sensor/"+id;
+     
             requestHTTP(url, "PUT", jsonString); 
           }
       }

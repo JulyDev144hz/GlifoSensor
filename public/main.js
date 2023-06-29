@@ -101,11 +101,7 @@ fetch("/public/barrios.json")
 
 setTimeout(() => {
   barrios.forEach((barrio) => {
-    let sumTotal = 0;
 
-    barrio.sensores.map((s) => (sumTotal += s.temperatura));
-
-    barrio.polygon.setStyle({ color: "#009c4c" });
 
     barrio.polygon.addTo(map);
     barrio.polygon.on("click", (e) => {
@@ -126,7 +122,7 @@ setTimeout(() => {
           let promedio = [];
 
           while (reintentar) {
-            if(historialOrdenado.length == 0) break
+            if (historialOrdenado.length == 0) break
             promedio = [];
             promedio.push(historialOrdenado[0]);
             historialOrdenado.map((dato) => {
@@ -263,10 +259,14 @@ setTimeout(() => {
               chart.update();
 
               if (json.length < 2) {
+                console.log(json[0])
+
                 $("#chartSensor" + (indx + 1)).addClass("hidden");
                 $("#chartError" + (indx + 1)).removeClass("hidden");
                 $("#chartError" + (indx + 1)).html(`
                   Humedad : ${json[0].humedad}<br>
+                  CO2 : ${json[0].co2}<br>
+                  Temperatura : ${json[0].co2}<br>
                 `);
               }
             });
@@ -277,28 +277,27 @@ setTimeout(() => {
     });
     barrio.polygon.on("mouseover", (e) => {
       try {
-        
+
         let sensoresOrdenados = barrio.historialSensores.sort((b, a) => {
           return (
             Date.parse(convertLocaleToDate(a.timeStamp)) -
             Date.parse(convertLocaleToDate(b.timeStamp))
-            );
-          });
-          console.log(sensoresOrdenados)
+          );
+        });
 
         updateData(
           barrio.name,
-          barrio.sensores[0].temperatura,
-          barrio.sensores[0].humedad,
-          barrio.sensores[0].co2,
-          barrio.sensores[0].updatedAt
+          sensoresOrdenados[sensoresOrdenados.length - 1].temperatura,
+          sensoresOrdenados[sensoresOrdenados.length - 1].humedad,
+          sensoresOrdenados[sensoresOrdenados.length - 1].co2,
+          sensoresOrdenados[sensoresOrdenados.length - 1].timeStamp
         );
       } catch (error) {
         updateData(barrio.name, "?", "?", "?", "sin registro");
       }
     });
   });
-}, 100);
+}, 500);
 
 const DentroDeXMinutos = (time1, time2, x) => {
   return time1 <= time2 && time2 <= time1 + x * 60 * 1000;
@@ -365,6 +364,27 @@ const getSensors = async () => {
         }
       });
     });
+    barrios.map(barrio => {
+      barrio.polygon.setStyle({ color: "#aaa" });
+      if (barrio.historialSensores.length > 0) {
+        barrio.polygon.setStyle({ color: "#009c4c" });
+        let sensoresOrdenados = barrio.historialSensores.sort((b, a) => {
+          return (
+            Date.parse(convertLocaleToDate(a.timeStamp)) -
+            Date.parse(convertLocaleToDate(b.timeStamp))
+          );
+        });
+        if (sensoresOrdenados[sensoresOrdenados.length - 1].temperatura >= 20) {
+          barrio.polygon.setStyle({ color: "#f88b0d" });
+        }
+        if (sensoresOrdenados[sensoresOrdenados.length - 1].temperatura >= 25) {
+          barrio.polygon.setStyle({ color: "#dd0909" });
+        }
+        if (sensoresOrdenados[sensoresOrdenados.length - 1].temperatura >= 30) {
+          barrio.polygon.setStyle({ color: "#5f105f" });
+        }
+      }
+    })
   } catch (error) {
     console.error(error);
   }
