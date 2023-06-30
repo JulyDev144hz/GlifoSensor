@@ -1,9 +1,8 @@
-var map = L.map("map",{
+var map = L.map("map", {
   center: [-34.6140305, -58.4517207],
   zoom: 12,
-  gestureHandling: true
-})
-
+  gestureHandling: true,
+});
 
 const todo = document.querySelector(".todo");
 const mapa = document.querySelector("#map");
@@ -104,8 +103,23 @@ fetch("/public/barrios.json")
       barrios.push(newBarrio);
     });
   });
+let loading = new Promise((resolve, reject)=>{
+  window.addEventListener("load",e=>{
+    let intervalLoading = setInterval(() => {
+      console.log('cargando')
+      if(barrios.length > 0){
+        resolve('Cargo')
+        clearInterval(intervalLoading)
+      }
+    }, 100);
+  })
+})
 
-setTimeout(() => {
+
+let cargarBarrios = async () => {
+  let resp = await loading
+  console.log('Barrios cargados')
+  getSensors()
   barrios.forEach((barrio) => {
     barrio.polygon.addTo(map);
     barrio.polygon.on("click", (e) => {
@@ -124,7 +138,7 @@ setTimeout(() => {
           let reintentar = true;
           let puntosPromedios = [];
           let promedio = [];
-
+  
           while (reintentar) {
             if (historialOrdenado.length == 0) break;
             promedio = [];
@@ -132,9 +146,7 @@ setTimeout(() => {
             historialOrdenado.map((dato) => {
               if (
                 DentroDeXMinutos(
-                  Date.parse(
-                    convertLocaleToDate(historialOrdenado[0].timeStamp)
-                  ),
+                  Date.parse(convertLocaleToDate(historialOrdenado[0].timeStamp)),
                   Date.parse(convertLocaleToDate(dato.timeStamp)),
                   5
                 )
@@ -145,19 +157,19 @@ setTimeout(() => {
                 reintentar = true;
               }
             });
-
+  
             historialOrdenado = historialOrdenado.filter(
               (el) => !promedio.includes(el)
             );
             puntosPromedios.push(promedio);
           }
-
+  
           if (puntosPromedios.length == 1) {
             $("#ChartPromedio").addClass("hidden");
             $("#chartError").removeClass("hidden");
             $("#chartError").html(`
-            No hay suficientes datos para hacer un promedio de ${barrio.name}
-          `);
+                No hay suficientes datos para hacer un promedio de ${barrio.name}
+              `);
           } else {
             puntosPromedios.map((punto, index) => {
               let humedadTotal = 0;
@@ -199,8 +211,8 @@ setTimeout(() => {
           $("#ChartPromedio").addClass("hidden");
           $("#chartError").removeClass("hidden");
           $("#chartError").html(`
-            No hay suficientes datos para hacer un promedio de ${barrio.name}
-          `);
+                No hay suficientes datos para hacer un promedio de ${barrio.name}
+              `);
         } else {
           $("#ChartPromedio").addClass("hidden");
           $("#chartError").removeClass("hidden");
@@ -211,11 +223,11 @@ setTimeout(() => {
         barrio.sensores.map(async (sns, indx) => {
           let id = sns._id;
           sensores.innerHTML += `
-          <div class="sensor">
-            <h6>Sensor: ${sns.name}</h6>
-            <canvas id="chartSensor${indx + 1}"></canvas>
-            <p id="chartError${indx + 1}" class="hidden msgChart"></p>
-          </div>`;
+              <div class="sensor">
+                <h6>Sensor: ${sns.name}</h6>
+                <canvas id="chartSensor${indx + 1}"></canvas>
+                <p id="chartError${indx + 1}" class="hidden msgChart"></p>
+              </div>`;
           let config = {
             type: "line",
             data: {
@@ -241,7 +253,7 @@ setTimeout(() => {
           config.data.datasets[0].data,
             config.data.datasets[1].data,
             (config.data.datasets[2].data = []);
-
+  
           fetch("/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
@@ -259,23 +271,23 @@ setTimeout(() => {
                   y: sensor.temperatura,
                 };
               });
-
+  
               let chart = new Chart(
                 document.getElementById("chartSensor" + (indx + 1)),
                 config
               );
-
+  
               chartSensors.push({ chart: chart, id: id });
               chart.update();
-
+  
               if (json.length < 2) {
                 $("#chartSensor" + (indx + 1)).addClass("hidden");
                 $("#chartError" + (indx + 1)).removeClass("hidden");
                 $("#chartError" + (indx + 1)).html(`
-                  Humedad : ${json[0].humedad}<br>
-                  CO2 : ${json[0].co2}<br>
-                  Temperatura : ${json[0].co2}<br>
-                `);
+                      Humedad : ${json[0].humedad}<br>
+                      CO2 : ${json[0].co2}<br>
+                      Temperatura : ${json[0].co2}<br>
+                    `);
               }
             });
         });
@@ -291,7 +303,7 @@ setTimeout(() => {
             Date.parse(convertLocaleToDate(b.timeStamp))
           );
         });
-
+  
         updateData(
           barrio.name,
           sensoresOrdenados[sensoresOrdenados.length - 1].temperatura,
@@ -304,7 +316,10 @@ setTimeout(() => {
       }
     });
   });
-}, 500);
+};
+cargarBarrios()
+
+
 
 const DentroDeXMinutos = (time1, time2, x) => {
   return time1 <= time2 && time2 <= time1 + x * 60 * 1000;
