@@ -389,3 +389,26 @@
     }
   }
 }
+
+
+// responsive
+
+@media (max-width:950px) {
+  .mapInfo{
+    height: 190vh !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 100vh 90vh;
+    #map{
+      .leyenda{
+        gap: 0;
+        justify-content: space-evenly;
+        .type{
+          font-size: 10px;
+        }
+      }
+    }
+    .asideInfo{
+      background: red;
+    }
+  }
+}

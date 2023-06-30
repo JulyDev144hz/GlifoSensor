@@ -354,4 +354,22 @@
 }
 .dataPerQuality .typeInfo:nth-child(4) {
   background-color: #009c4c;
+}
+
+@media (max-width: 950px) {
+  .mapInfo {
+    height: 190vh !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 100vh 90vh;
+  }
+  .mapInfo #map .leyenda {
+    gap: 0;
+    justify-content: space-evenly;
+  }
+  .mapInfo #map .leyenda .type {
+    font-size: 10px;
+  }
+  .mapInfo .asideInfo {
+    background: red;
+  }
 }/*# sourceMappingURL=styles.css.map */

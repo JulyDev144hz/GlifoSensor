@@ -3,7 +3,7 @@ $("#co2Info").on("click", e => {
         icon: 'info',
         title: 'Dioxido de carbono',
         text: 'El dióxido de carbono es un compuesto químico formado por moléculas que tienen cada una un átomo de carbono unido covalentemente por doble enlace a dos átomos de oxígeno',
-        footer: '<a target="_blank" href="https://en.wikipedia.org/wiki/Carbon_dioxide">Mas informacion</a>'
+        footer: '<a target="_blank" href="https://es.wikipedia.org/wiki/Di%C3%B3xido_de_carbono">Mas informacion</a>'
     })
 })
 $("#tempInfo").on("click", e => {
@@ -11,7 +11,7 @@ $("#tempInfo").on("click", e => {
         icon: 'info',
         title: 'Temperatura',
         text: 'La temperatura es una cantidad física que expresa cuantitativamente las percepciones de calor y frío.',
-        footer: '<a target="_blank" href="https://en.wikipedia.org/wiki/Temperature">Mas informacion</a>'
+        footer: '<a target="_blank" href="https://es.wikipedia.org/wiki/Temperatura">Mas informacion</a>'
     })
 
 })
