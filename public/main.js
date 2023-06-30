@@ -1,4 +1,10 @@
-var map = L.map("map").setView([-34.6140305, -58.4517207], 12);
+var map = L.map("map",{
+  center: [-34.6140305, -58.4517207],
+  zoom: 12,
+  gestureHandling: true
+})
+
+
 const todo = document.querySelector(".todo");
 const mapa = document.querySelector("#map");
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -101,8 +107,6 @@ fetch("/public/barrios.json")
 
 setTimeout(() => {
   barrios.forEach((barrio) => {
-
-
     barrio.polygon.addTo(map);
     barrio.polygon.on("click", (e) => {
       window.location = "#datosSensor";
@@ -122,7 +126,7 @@ setTimeout(() => {
           let promedio = [];
 
           while (reintentar) {
-            if (historialOrdenado.length == 0) break
+            if (historialOrdenado.length == 0) break;
             promedio = [];
             promedio.push(historialOrdenado[0]);
             historialOrdenado.map((dato) => {
@@ -132,7 +136,7 @@ setTimeout(() => {
                     convertLocaleToDate(historialOrdenado[0].timeStamp)
                   ),
                   Date.parse(convertLocaleToDate(dato.timeStamp)),
-                  2
+                  5
                 )
               ) {
                 promedio.push(dato);
@@ -141,7 +145,6 @@ setTimeout(() => {
                 reintentar = true;
               }
             });
-            console.log(promedio)
 
             historialOrdenado = historialOrdenado.filter(
               (el) => !promedio.includes(el)
@@ -149,47 +152,54 @@ setTimeout(() => {
             puntosPromedios.push(promedio);
           }
 
-
-          puntosPromedios.map((punto, index) => {
-            let humedadTotal = 0;
-            let temperaturaTotal = 0;
-            let co2Total = 0;
-            punto.map((s) => {
-              humedadTotal += s.humedad;
-              temperaturaTotal += s.temperatura;
-              co2Total += s.co2;
+          if (puntosPromedios.length == 1) {
+            $("#ChartPromedio").addClass("hidden");
+            $("#chartError").removeClass("hidden");
+            $("#chartError").html(`
+            No hay suficientes datos para hacer un promedio de ${barrio.name}
+          `);
+          } else {
+            puntosPromedios.map((punto, index) => {
+              let humedadTotal = 0;
+              let temperaturaTotal = 0;
+              let co2Total = 0;
+              punto.map((s) => {
+                humedadTotal += s.humedad;
+                temperaturaTotal += s.temperatura;
+                co2Total += s.co2;
+              });
+              let humedadPromedio = humedadTotal / punto.length;
+              let temperaturaPromedio = temperaturaTotal / punto.length;
+              let co2Promedio = co2Total / punto.length;
+              let time = punto[0].timeStamp;
+              promedios.push({
+                humedad: humedadPromedio,
+                temperatura: temperaturaPromedio,
+                co2: co2Promedio,
+                timeStamp: time,
+              });
             });
-            let humedadPromedio = humedadTotal / punto.length;
-            let temperaturaPromedio = temperaturaTotal / punto.length;
-            let co2Promedio = co2Total / punto.length;
-            let time = punto[0].timeStamp;
-            promedios.push({
-              humedad: humedadPromedio,
-              temperatura: temperaturaPromedio,
-              co2: co2Promedio,
-              timeStamp: time,
+            promedios.map((punto, index) => {
+              chartPromedio.config.data.datasets[0].data[index] = {
+                x: punto.timeStamp,
+                y: punto.humedad,
+              };
+              chartPromedio.config.data.datasets[1].data[index] = {
+                x: punto.timeStamp,
+                y: punto.co2,
+              };
+              chartPromedio.config.data.datasets[2].data[index] = {
+                x: punto.timeStamp,
+                y: punto.temperatura,
+              };
             });
-          });
-          promedios.map((punto, index) => {
-            chartPromedio.config.data.datasets[0].data[index] = {
-              x: punto.timeStamp,
-              y: punto.humedad,
-            };
-            chartPromedio.config.data.datasets[1].data[index] = {
-              x: punto.timeStamp,
-              y: punto.co2,
-            };
-            chartPromedio.config.data.datasets[2].data[index] = {
-              x: punto.timeStamp,
-              y: punto.temperatura,
-            };
-          });
-          chartPromedio.update();
-        } else if (barrio.historialSensores == 1) {
+            chartPromedio.update();
+          }
+        } else if (barrio.historialSensores.length == 1) {
           $("#ChartPromedio").addClass("hidden");
           $("#chartError").removeClass("hidden");
           $("#chartError").html(`
-            Hola mondo
+            No hay suficientes datos para hacer un promedio de ${barrio.name}
           `);
         } else {
           $("#ChartPromedio").addClass("hidden");
@@ -259,8 +269,6 @@ setTimeout(() => {
               chart.update();
 
               if (json.length < 2) {
-                console.log(json[0])
-
                 $("#chartSensor" + (indx + 1)).addClass("hidden");
                 $("#chartError" + (indx + 1)).removeClass("hidden");
                 $("#chartError" + (indx + 1)).html(`
@@ -277,8 +285,7 @@ setTimeout(() => {
     });
     barrio.polygon.on("mouseover", (e) => {
       try {
-
-        let sensoresOrdenados = barrio.historialSensores.sort((b, a) => {
+        let sensoresOrdenados = barrio.historialSensores.sort((a, b) => {
           return (
             Date.parse(convertLocaleToDate(a.timeStamp)) -
             Date.parse(convertLocaleToDate(b.timeStamp))
@@ -364,11 +371,11 @@ const getSensors = async () => {
         }
       });
     });
-    barrios.map(barrio => {
-      barrio.polygon.setStyle({ color: "#aaa" });
+    barrios.map((barrio) => {
+      barrio.polygon.setStyle({ color: "#777" });
       if (barrio.historialSensores.length > 0) {
         barrio.polygon.setStyle({ color: "#009c4c" });
-        let sensoresOrdenados = barrio.historialSensores.sort((b, a) => {
+        let sensoresOrdenados = barrio.historialSensores.sort((a, b) => {
           return (
             Date.parse(convertLocaleToDate(a.timeStamp)) -
             Date.parse(convertLocaleToDate(b.timeStamp))
@@ -384,7 +391,7 @@ const getSensors = async () => {
           barrio.polygon.setStyle({ color: "#5f105f" });
         }
       }
-    })
+    });
   } catch (error) {
     console.error(error);
   }
