@@ -157,7 +157,7 @@ let cargarBarrios = async () => {
                 DentroDeXMinutos(
                   Date.parse(convertLocaleToDate(historialOrdenado[0].timeStamp)),
                   Date.parse(convertLocaleToDate(dato.timeStamp)),
-                  5
+                  15
                 )
               ) {
                 promedio.push(dato);
