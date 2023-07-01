@@ -372,4 +372,21 @@
   .mapInfo .asideInfo {
     background: red;
   }
+  .section .sensor {
+    width: 100% !important;
+  }
+  .section.informacion .infoTitle {
+    font-size: 40px;
+    text-align: center;
+  }
+  .section.informacion .medidas {
+    width: 100%;
+    border-radius: 0;
+  }
+  .section.informacion .medidas li {
+    font-size: 20px;
+  }
+  .section.informacion .medidas li:last-child {
+    border-radius: 0;
+  }
 }/*# sourceMappingURL=styles.css.map */

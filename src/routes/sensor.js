@@ -21,7 +21,7 @@ router.get("/sensor/:id", (req, res) => {
 
 // post sensor
 router.post("/sensor", (req, res) => {
-  const createdAt = new Date().toLocaleString();
+  const createdAt = new Date().toLocaleString("es-AR");
   const sensor = req.body;
   sensor.createdAt = createdAt;
   sensor.updatedAt = createdAt;
@@ -45,7 +45,7 @@ router.post("/sensor", (req, res) => {
 router.put("/sensor/:id", (req, res) => {
   let { id } = req.params;
   const { name, coords, co2, humedad, temperatura } = sensorSchema(req.body);
-  const updatedAt = new Date().toLocaleString();
+  const updatedAt = new Date().toLocaleString('es-AR');
 
   historySensorSchema({
     idSensor: id,

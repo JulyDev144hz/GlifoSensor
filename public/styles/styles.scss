@@ -390,25 +390,46 @@
   }
 }
 
-
 // responsive
 
-@media (max-width:950px) {
-  .mapInfo{
+@media (max-width: 950px) {
+  .mapInfo {
     height: 190vh !important;
     grid-template-columns: 1fr !important;
     grid-template-rows: 100vh 90vh;
-    #map{
-      .leyenda{
+    #map {
+      .leyenda {
         gap: 0;
         justify-content: space-evenly;
-        .type{
+        .type {
           font-size: 10px;
         }
       }
     }
-    .asideInfo{
+    .asideInfo {
       background: red;
+    }
+
+  }
+  .section {
+    .sensor {
+      width: 100% !important;
+    }
+    &.informacion{
+      .infoTitle{
+        font-size: 40px;
+        text-align: center;
+      }
+      .medidas{
+        width: 100%;
+        border-radius: 0;
+        li{
+          font-size: 20px;
+          &:last-child{
+            border-radius: 0;
+          }
+        }
+      }
     }
   }
 }

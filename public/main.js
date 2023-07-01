@@ -47,6 +47,15 @@ const defaultcfg = {
       },
     ],
   },
+  options: {
+    scales: {
+      yAxes: [{
+          ticks: {
+              fontSize: 10
+          }
+      }]
+  }
+}
 };
 let chartPromedio = new Chart(ctx, defaultcfg);
 // [0,1,2,3,4,5,6].map(e=>{
