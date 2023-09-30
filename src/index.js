@@ -33,7 +33,7 @@ mongoose
     .then(()=>{
     console.log("Connected to MongoDB Atlas")
     })
-    .catch(()=>{
+    .catch((error)=>{
         console.error(error)
     }) 
 

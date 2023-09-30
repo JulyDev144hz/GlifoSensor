@@ -365,6 +365,18 @@
   .mapInfo #map .leyenda {
     gap: 0;
     justify-content: space-evenly;
+    
+  }
+
+  .leyenda .type{
+    width: 100px;
+    height: 35px;
+    display: flex;
+  }
+
+
+  .leyenda .type p{
+    font-size: 15px;
   }
   .mapInfo #map .leyenda .type {
     font-size: 10px;
