@@ -201,20 +201,28 @@ let cargarBarrios = async () => {
               });
             });
             promedios.map((punto, index) => {
-              chartPromedio.config.data.datasets[0].data[index] = {
+              chartPromedio.config.data.datasets[0].data.push({
                 x: punto.timeStamp,
                 y: punto.humedad,
-              };
-              chartPromedio.config.data.datasets[1].data[index] = {
+              });
+              chartPromedio.config.data.datasets[1].data.push({
                 x: punto.timeStamp,
                 y: punto.co2,
-              };
-              chartPromedio.config.data.datasets[2].data[index] = {
+              });
+              chartPromedio.config.data.datasets[2].data.push({
                 x: punto.timeStamp,
                 y: punto.temperatura,
-              };
+              });
             });
+          
+            // Limitar a los últimos 10 registros
+            if (promedios.length > 10) {
+              chartPromedio.config.data.datasets[0].data = chartPromedio.config.data.datasets[0].data.slice(-10);
+              chartPromedio.config.data.datasets[1].data = chartPromedio.config.data.datasets[1].data.slice(-10);
+              chartPromedio.config.data.datasets[2].data = chartPromedio.config.data.datasets[2].data.slice(-10);
+            }
             chartPromedio.update();
+          
           }
         } else if (barrio.historialSensores.length == 1) {
           $("#ChartPromedio").addClass("hidden");
@@ -353,6 +361,7 @@ const getSensors = async () => {
       sensorChart.chart.config.data.datasets[2].data = [];
       jsonHistory
         .filter((x) => x.idSensor == sensorChart.id)
+        .slice(-10)
         .map((sensor, index) => {
           sensorChart.chart.config.data.datasets[0].data[index] = {
             x: sensor.timeStamp,

@@ -34,7 +34,63 @@
   position: relative;
   background: linear-gradient(-135deg, #55aa00, #009c4c);
   z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.header a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  transition: background-color 0.3s;
+  margin-left: 5px; 
+  font-size: 14px; 
+}
+.header a:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Cambia el color de fondo al pasar el mouse */
+  color: #fcfcfc; /* Cambia el color del texto al pasar el mouse */
+}
+
+.aboutus{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  
+  width: 100%;
+}
+
+.aboutus_div{
+  width: 40%;
+  color: #dddada;
+  background-color: #c7c3c34f;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.squareInfo{
+  display: flex;
+  gap: 10px;
+}
+.intoInfo
+{
+  text-align: center;
+  width: 20%;
+  border-radius: 10px;
+  padding: 3px;
+  background-color: #bdb2b2ad;
+  color: white;
+  transition: ease .2s all;
+}
+
+.intoInfo:hover{
+  background-color: #d1ccccad;
+  transform: scale(1.05);
+}
+
 .header .containerCheckBox {
   position: absolute;
   right: 10px;
@@ -374,13 +430,13 @@
 
 .dataPerQuality {
   display: flex;
+  margin-top: 50px;
   flex-direction: row-reverse;
   align-items: stretch;
   justify-content: center;
   width: 80%;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 50px;
 }
 .dataPerQuality .typeInfo {
   padding: 20px;
