@@ -60,6 +60,67 @@
 .header .containerCheckBox.active::before {
   left: 30px;
 }
+
+.infos, .contaminantes{
+  width: 100%;
+  gap: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 50px;
+  color: white;
+}
+.contaminantes_h1{
+  color: white;
+  margin-bottom: 50px;
+}
+.contaminantes{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.moreInfo, .moreInfo_contaminantes{
+  width: 40%;
+  height: auto;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 5px 1px #111;
+}
+
+.moreInfo_contaminantes{
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.moreInfo_contaminantes:first-child{
+  background-color: rgb(212, 67, 67);
+}
+
+.moreInfo_contaminantes:nth-child(4){
+  background-color: rgb(250, 166, 56);
+}
+
+.moreInfo_contaminantes:nth-child(5){
+  background-color: rgb(137, 194, 71);
+}
+
+.moreInfo_contaminantes:nth-child(8){
+  background-color: rgb(103, 137, 248);
+}
+
+.moreInfo_contaminantes:nth-child(9){
+  background-color: rgb(171, 124, 233);
+}
+
+.contaminantes_info{
+  width: 40%;
+  height: 220px;
+}
+
 .header .containerCheckBox input {
   position: absolute;
   height: 100%;
@@ -274,11 +335,12 @@
   background: linear-gradient(-45deg, #ae57c9, #3d0258);
 }
 
-.infoTitle {
+.infoTitle{
   color: white;
   margin-top: 50px;
-  font-size: 55px;
+  font-size: 35px;
 }
+
 
 .informacion .medidas {
   width: 50%;
@@ -303,7 +365,7 @@
   width: 100%;
   text-align: center;
   padding: 20px;
-  font-size: 40px;
+  font-size: 20px;
   text-decoration: none;
   list-style: none;
   border-bottom: 2px solid black;
@@ -401,4 +463,5 @@
   .section.informacion .medidas li:last-child {
     border-radius: 0;
   }
+
 }/*# sourceMappingURL=styles.css.map */
