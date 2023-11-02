@@ -14,7 +14,7 @@ char* nombre = "Et 36";
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const String ipServer = "192.168.2.41" ;
+const String ipServer = "192.168.2.30" ;
 
 const char* ssid = "BA Escuela";
 const char* password =  "";
@@ -69,7 +69,7 @@ void loop() {
    Serial.println(jsonString);
 
  
-    http.begin("http://"+ipServer+":3000/sensor");  //Specify destination for HTTP request
+    http.begin("http://citysensor.glitch.me/sensor");  //Specify destination for HTTP request
     http.addHeader("Content-Type", "application/json");             //Specify content-type header
     
     //int httpResponseCode = http.POST(jsonString);
@@ -91,15 +91,15 @@ void loop() {
             found = true;
             const String id = doc[i]["_id"];
             http.end();
-            String url = "http://"+ipServer+":3000/sensor/"+id;
+            String url = "https://citysensor.glitch.me/sensor/"+id;
      
             requestHTTP(url, "PUT", jsonString); 
           }
       }
       if (!found){
             http.end();
-            String url = "http://"+ipServer+":3000/sensor/";
-            requestHTTP(url, "POST", jsonString) ;
+            String url = "https://citysensor.glitch.me/sensor/";
+            requestHTTP(url, "POST", jsonString);
         }
       
     }else{
@@ -121,7 +121,7 @@ void loop() {
  }
   // esp_deep_sleep_start();
   
-  delay(60000);  //Send a request every 5 seconds
+  delay(5000);  //Send a request every 5 seconds
 }
 
 void requestHTTP(String url, String request , String json){

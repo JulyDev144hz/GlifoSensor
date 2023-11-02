@@ -270,7 +270,8 @@ let cargarBarrios = async () => {
           config.data.datasets[0].data,
             config.data.datasets[1].data,
             (config.data.datasets[2].data = []);
-  
+          temperaturas = []
+          max = 0
           fetch("/historySensor/" + id)
             .then((data) => data.json())
             .then((json) => {
@@ -288,7 +289,7 @@ let cargarBarrios = async () => {
                   y: sensor.temperatura,
                 };
               });
-  
+   
               let chart = new Chart(
                 document.getElementById("chartSensor" + (indx + 1)),
                 config
@@ -320,7 +321,7 @@ let cargarBarrios = async () => {
             Date.parse(convertLocaleToDate(b.timeStamp))
           );
         });
-  
+        
         updateData(
           barrio.name,
           sensoresOrdenados[sensoresOrdenados.length - 1].temperatura,

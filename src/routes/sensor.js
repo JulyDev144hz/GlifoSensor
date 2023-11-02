@@ -84,4 +84,15 @@ router.delete("/sensor/:id", (req, res) => {
     .catch((error) => res.json({ message: error }));
 });
 
+router.delete("/sensorDeleteMany", (req, res) => {
+  let { query = "{}", filter="{}" } = req.query;
+  query = JSON.parse(query)
+  filter = JSON.parse(filter)
+  
+  sensorSchema
+    .deleteMany(query, filter)
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ message: error }));
+});
+
 module.exports = router;
