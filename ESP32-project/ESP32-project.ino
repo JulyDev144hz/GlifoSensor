@@ -6,7 +6,7 @@
 // instalar dht sensor library y arduinoJSON para correr el programa
 // para usar la tarjeta esp32 poner en preferencias este link: https://dl.espressif.com/dl/package_esp32_index.json, http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
-#define DHTPIN 13
+#define DHTPIN 23
 #define DHTTYPE DHT11
 
 // Aca va el nombre del sensor
@@ -14,9 +14,9 @@ char* nombre = "Et 36";
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const String ipServer = "192.168.2.30" ;
+const String ipServer = "192.168.0.112" ;
 
-const char* ssid = "BA Escuela";
+const char* ssid = "facu";
 const char* password =  "";
 
 float coords[2] = {-34.5599051,-58.4941941};
@@ -69,7 +69,7 @@ void loop() {
    Serial.println(jsonString);
 
  
-    http.begin("http://citysensor.glitch.me/sensor");  //Specify destination for HTTP request
+    http.begin("http://"+ipServer+":3000/sensor");  //Specify destination for HTTP request
     http.addHeader("Content-Type", "application/json");             //Specify content-type header
     
     //int httpResponseCode = http.POST(jsonString);
@@ -91,14 +91,14 @@ void loop() {
             found = true;
             const String id = doc[i]["_id"];
             http.end();
-            String url = "https://citysensor.glitch.me/sensor/"+id;
+            String url = "http://"+ipServer+":3000/sensor/"+id;
      
             requestHTTP(url, "PUT", jsonString); 
           }
       }
       if (!found){
             http.end();
-            String url = "https://citysensor.glitch.me/sensor/";
+            String url = "http://"+ipServer+":3000/sensor/";
             requestHTTP(url, "POST", jsonString);
         }
       

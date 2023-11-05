@@ -32,9 +32,9 @@ const ids = ["654383104ee49380dd519bc2", "654383604ee49380dd519bde", "654383bf4e
 const main = () => {
   try {
     ids.map(id => {
-      let humedad = Math.floor(Math.random() * 100);
-      let temperatura = Math.floor(Math.random() * 100);
-      let co2 = Math.floor(Math.random() * 100);
+      let humedad = Math.floor(Math.random() * 30);
+      let temperatura = Math.floor(Math.random() * 30);
+      let co2 = Math.floor(Math.random() * 30);
       axios
         .put(`https://citysensor.glitch.me/sensor/${id}`, {
           name: "demostracion palermo",

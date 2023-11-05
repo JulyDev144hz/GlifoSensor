@@ -2,7 +2,7 @@ $("#co2Info").on("click", e => {
     Swal.fire({
         icon: 'info',
         title: 'Dioxido de carbono',
-        text: 'El dióxido de carbono es un compuesto químico formado por moléculas que tienen cada una un átomo de carbono unido covalentemente por doble enlace a dos átomos de oxígeno',
+        text: 'El dióxido de carbono es un compuesto químico formado por moléculas que tienen cada una un átomo de carbono unido covalentemente por doble enlace a dos átomos de oxígeno.',
         footer: '<a target="_blank" href="https://es.wikipedia.org/wiki/Di%C3%B3xido_de_carbono">Mas informacion</a>'
     })
 })
