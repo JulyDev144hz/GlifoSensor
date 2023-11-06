@@ -158,6 +158,13 @@
   align-items: center;
   flex-wrap: wrap;
   box-shadow: 0 0 5px 1px #111;
+  border-radius: 10px;
+  transition: background-color ease .3s;
+}
+
+.moreInfo:hover{
+
+  background-color: rgb(226, 83, 83);
 }
 
 .moreInfo_contaminantes{
@@ -314,6 +321,17 @@
   color: rgba(255, 255, 255, 0.788);
   font-weight: 500;
 }
+
+
+#carcasa{
+  width: 50vw !important;
+  height: 50vw !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+
 .main .mapInfo .asideInfo .boxes {
   height: 100%;
   display: grid;

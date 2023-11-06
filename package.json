@@ -30,7 +30,8 @@
     "mongoose": "^7.0.0",
     "morgan": "^1.10.0",
     "node-fetch": "^3.3.0",
-    "serialport": "^10.5.0"
+    "serialport": "^10.5.0",
+    "three": "^0.158.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
