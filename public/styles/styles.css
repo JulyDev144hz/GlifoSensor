@@ -323,15 +323,6 @@
 }
 
 
-#carcasa{
-  width: 50vw !important;
-  height: 50vw !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-}
-
 .main .mapInfo .asideInfo .boxes {
   height: 100%;
   display: grid;
