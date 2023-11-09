@@ -5,11 +5,25 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 const monkeyUrl = new URL('/public/porongota.glb', import.meta.url);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth -6, window.innerHeight);
+renderer.setSize(window.innerWidth -7, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // Configura el color de fondo
-renderer.setClearColor(0x0055aa00);
+
+setInterval(()=>{
+    const darkModeElement = document.querySelector('.darkMode');
+
+    console.log(darkModeElement)
+    // Haz algo en función del resultado
+    if (darkModeElement) {
+        renderer.setClearColor(0xae57c9);
+      // El modo oscuro está activado
+    } else {
+        // El modo oscuro no está activado
+        renderer.setClearColor(0x0055aa00);
+    }
+}, 1000)
+
 
 const scene = new THREE.Scene();
 

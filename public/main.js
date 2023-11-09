@@ -202,10 +202,13 @@ let cargarBarrios = async () => {
                 timeStamp: time,
               });
             });
-            // Set chartPromedio
-            chartPromedio.config.data.datasets[0].data = []
-            chartPromedio.config.data.datasets[1].data = []
-            chartPromedio.config.data.datasets[2].data = []
+            try {
+              chartPromedio.config.data.datasets[0].data = []
+              chartPromedio.config.data.datasets[1].data = []
+              chartPromedio.config.data.datasets[2].data = []
+            } catch (error) {
+              
+            }
             promedios.map((punto, index) => {
               chartPromedio.config.data.datasets[0].data.push({
                 x: punto.timeStamp,
@@ -227,7 +230,6 @@ let cargarBarrios = async () => {
               chartPromedio.config.data.datasets[1].data = chartPromedio.config.data.datasets[1].data.slice(-10);
               chartPromedio.config.data.datasets[2].data = chartPromedio.config.data.datasets[2].data.slice(-10);
             }
-            console.log(chartPromedio)
             chartPromedio.update();
           
           }
