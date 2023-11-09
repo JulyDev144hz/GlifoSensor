@@ -1,3 +1,4 @@
+// Muestra la informacion de cada dato contaminante
 $("#co2Info").on("click", e => {
     Swal.fire({
         icon: 'info',

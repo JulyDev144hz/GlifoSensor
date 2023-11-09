@@ -19,6 +19,7 @@ let chartSensors = [];
 
 const ctx = document.getElementById("ChartPromedio");
 
+//Se define la configuracion default de los graficos
 const defaultcfg = {
   type: "line",
   data: {
@@ -59,13 +60,14 @@ const defaultcfg = {
   }
 }
 };
-let chartPromedio = new Chart(ctx, defaultcfg);
+let chartPromedio = new Chart(ctx, defaultcfg); //Grafico que muestra la contaminacion promedio de los sensores de un barrio
 // [0,1,2,3,4,5,6].map(e=>{
 //   humedad.data.datasets[0].data[e] = {x:"2016/12/"+e,y:e*50}
 
 // })
 // humedad.update()
 
+//Permite crear barrios con sus datos
 class Barrio {
   constructor(name, coords) {
     this.name = name;
@@ -78,6 +80,7 @@ class Barrio {
 
 let barrios = [];
 
+//Permite saber entre que conjunto de coordenadas se encuentra una coordenada especifica
 function RayCasting(point, vs) {
   // ray-casting algorithm based on
   // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
@@ -100,6 +103,7 @@ function RayCasting(point, vs) {
   return inside;
 }
 
+//Recoge la informacion de los barrios, los crea y guarda en el array de barrios.
 fetch("/public/barrios.json")
   .then((data) => data.json())
   .then((json) => {
@@ -114,6 +118,8 @@ fetch("/public/barrios.json")
       barrios.push(newBarrio);
     });
   });
+
+
 let loading = new Promise((resolve, reject)=>{
   window.addEventListener("load",e=>{
     let intervalLoading = setInterval(() => {
@@ -352,6 +358,7 @@ const DentroDeXMinutos = (time1, time2, x) => {
   return time1 <= time2 && time2 <= time1 + x * 60 * 1000;
 };
 
+
 const convertLocaleToDate = (time) => {
   time = time.split(" ");
   time[0] = time[0].split("/");
@@ -371,7 +378,7 @@ const getSensors = async () => {
       sensorChart.chart.config.data.datasets[2].data = [];
       jsonHistory
         .filter((x) => x.idSensor == sensorChart.id)
-        .slice(-10)
+        .slice(-10) //solo los ultimos 10 datos
         .map((sensor, index) => {
           sensorChart.chart.config.data.datasets[0].data[index] = {
             x: sensor.timeStamp,
@@ -394,7 +401,6 @@ const getSensors = async () => {
     json.forEach((s) => {
       barrios.map((barr) => {
         if (RayCasting(s.coords, barr.coords)) {
-          // if (barr.sensores.find(e => e._id == s._id) == undefined) {
           barr.sensores = barr.sensores.filter((e) => e._id != s._id);
           barr.historialSensores = barr.historialSensores.filter(
             (x) => x.idSensor != s._id
@@ -404,9 +410,7 @@ const getSensors = async () => {
             .map((dato) => {
               barr.historialSensores.push(dato);
             });
-
-          barr.sensores.push(s);
-          // }
+          barr.sensores.push(s);          
         } else {
           if (barr.sensores.find((e) => e._id == s._id) != undefined) {
             barr.sensores = barr.sensores.filter((e) => e._id != s._id);
@@ -414,6 +418,8 @@ const getSensors = async () => {
         }
       });
     });
+
+    //Esto es para cambiar el color de fondo de los barrios en virtud de la calidad del aire
     barrios.map((barrio) => {
       barrio.polygon.setStyle({ color: "#777" });
       if (barrio.historialSensores.length > 0) {
@@ -440,6 +446,7 @@ const getSensors = async () => {
   }
 };
 
+//Permite actualizar los datos en el lado izquierdo de la pagina
 const updateData = (nombre, temperatura, humedad, co2, actualizado) => {
   let dataNombre = document.getElementById("name");
   let dataco2 = document.getElementById("co2");
@@ -453,6 +460,7 @@ const updateData = (nombre, temperatura, humedad, co2, actualizado) => {
   dataHumedad.innerHTML = humedad;
 };
 
+//Ejecuta la funcion getSensor cada 5 segundos para realizar la actualizacion de datos
 getSensors();
 setInterval(() => {
   getSensors();

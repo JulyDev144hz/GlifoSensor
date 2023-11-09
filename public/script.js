@@ -81,11 +81,11 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(1, 1, 1);
 scene.add(directionalLight);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.3); // Color blanco y intensidad 0.3
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3); // Color blanco e intensidad 0.3
 scene.add(ambientLight);
 
 // Agregar una luz puntual
-const pointLight = new THREE.PointLight(0xffffff, 1, 100); // Color blanco y intensidad 1
+const pointLight = new THREE.PointLight(0xffffff, 1, 100); // Color blanco e intensidad 1
 pointLight.position.set(0, 10, 0); // Posición de la luz puntual
 scene.add(pointLight);
 
