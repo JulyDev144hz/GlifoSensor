@@ -5,7 +5,7 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 const monkeyUrl = new URL('/public/porongota.glb', import.meta.url);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth -7, window.innerHeight);
+renderer.setSize(window.innerWidth -7, window.innerHeight-20);
 document.body.appendChild(renderer.domElement);
 
 // Configura el color de fondo
