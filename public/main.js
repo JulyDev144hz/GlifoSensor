@@ -1,9 +1,11 @@
+
+// definimos el mapa y lo centramos en CABA 
 var map = L.map("map", {
   center: [-34.6140305, -58.4517207],
   zoom: 12,
   gestureHandling: true,
 });
-
+// seleccionamos el div donde va a estar el mapa y la informacion
 const todo = document.querySelector(".todo");
 const mapa = document.querySelector("#map");
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -200,6 +202,10 @@ let cargarBarrios = async () => {
                 timeStamp: time,
               });
             });
+            // Set chartPromedio
+            chartPromedio.config.data.datasets[0].data = []
+            chartPromedio.config.data.datasets[1].data = []
+            chartPromedio.config.data.datasets[2].data = []
             promedios.map((punto, index) => {
               chartPromedio.config.data.datasets[0].data.push({
                 x: punto.timeStamp,
@@ -221,6 +227,7 @@ let cargarBarrios = async () => {
               chartPromedio.config.data.datasets[1].data = chartPromedio.config.data.datasets[1].data.slice(-10);
               chartPromedio.config.data.datasets[2].data = chartPromedio.config.data.datasets[2].data.slice(-10);
             }
+            console.log(chartPromedio)
             chartPromedio.update();
           
           }
