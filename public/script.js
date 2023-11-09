@@ -9,20 +9,20 @@ renderer.setSize(window.innerWidth -7, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // Configura el color de fondo
+renderer.setClearColor(0x0055aa00);
+$("#toggle").on("click", e=>{
+    $(".containerCheckBox").toggleClass("active")
+    $("body").toggleClass("darkMode")
 
-setInterval(()=>{
-    const darkModeElement = document.querySelector('.darkMode');
-
-    console.log(darkModeElement)
-    // Haz algo en función del resultado
-    if (darkModeElement) {
-        renderer.setClearColor(0xae57c9);
-      // El modo oscuro está activado
+    if ($("body").hasClass("darkMode")){
+    renderer.setClearColor(0xae57c9);
+    // El modo oscuro está activado
     } else {
-        // El modo oscuro no está activado
-        renderer.setClearColor(0x0055aa00);
+    // El modo oscuro no está activado
+    renderer.setClearColor(0x0055aa00);
     }
-}, 1000)
+
+})
 
 
 const scene = new THREE.Scene();

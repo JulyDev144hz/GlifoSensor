@@ -41,17 +41,28 @@
   background: linear-gradient(-135deg, #55aa00, #009c4c);
   z-index: 5;
 
-  .quienes_somos {
-    display: block;
-    text-decoration: none;
-    color: white;
-    font-weight: bolder;
-    width: 44%;
-    letter-spacing: 1px;
-    padding-left: 8px;
-    font-size: 1.4rem;
+  
+ .quienes_somos {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-weight: bolder;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 10px;
+  bottom: 0;
+  letter-spacing: 1px;
+  padding-left: 8px;
+  font-size: 1.4rem;
+  padding: 5px;
+  &:hover{
+    background: #ffffff0e;
   }
 
+}
   .containerCheckBox {
     position: absolute;
     right: 10px;
@@ -569,7 +580,7 @@
       background: red;
     }
   }
-  
+
   .section {
     .sensor {
       width: 100% !important;
