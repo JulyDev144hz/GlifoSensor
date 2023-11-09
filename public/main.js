@@ -132,7 +132,7 @@ let loading = new Promise((resolve, reject)=>{
   })
 })
 
-
+//carga la informacion referente a los barrios al clickear sobre cada uno
 let cargarBarrios = async () => {
   let resp = await loading
   console.log('Barrios cargados')
@@ -328,6 +328,7 @@ let cargarBarrios = async () => {
         console.error(error);
       }
     });
+    //al pasar el mouse por arriba se ejecuta updateData()
     barrio.polygon.on("mouseover", (e) => {
       try {
         let sensoresOrdenados = barrio.historialSensores.sort((a, b) => {
@@ -353,12 +354,12 @@ let cargarBarrios = async () => {
 cargarBarrios()
 
 
-
+//calcular tiempo
 const DentroDeXMinutos = (time1, time2, x) => {
   return time1 <= time2 && time2 <= time1 + x * 60 * 1000;
 };
 
-
+//convertir en formato date
 const convertLocaleToDate = (time) => {
   time = time.split(" ");
   time[0] = time[0].split("/");
