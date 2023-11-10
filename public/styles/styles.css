@@ -456,7 +456,27 @@
   background-color: #009c4c;
 }
 
+@media (max-width: 750px) {
+  .contaminantes {
+    grid-template-columns: 1fr;
+    width: 90%;
+  }
+  .informacion .infos {
+    grid-template-columns: 1fr;
+    width: 90%;
+  }
+}
 @media (max-width: 950px) {
+  .header h1 {
+    font-size: 30px;
+  }
+  .header .quienes_somos {
+    font-size: 15px;
+    position: relative;
+  }
+  .header .containerCheckBox {
+    display: none;
+  }
   .mapInfo {
     height: 190vh !important;
     grid-template-columns: 1fr !important;

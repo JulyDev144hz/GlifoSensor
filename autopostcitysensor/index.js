@@ -1,4 +1,5 @@
-const axios = require("axios");
+const axios = require("axios")
+
 //             Boca                           Puerto Madero               San telmo
 const ids = ["654383104ee49380dd519bc2", "654383604ee49380dd519bde", "654383bf4ee49380dd519c08",
   //              Constitucion                  Monserrat                   Retiro
@@ -28,13 +29,18 @@ const ids = ["654383104ee49380dd519bc2", "654383604ee49380dd519bde", "654383bf4e
   //              Villa Urquiza                    Coghlan                    Nuñez
   "649df71d88eb12d846da1d50", "649df9eabc45607a807de045", "654393734ee49380dd51a411",
 ]
-
 const main = () => {
   try {
     ids.map(id => {
-      let humedad = Math.floor(Math.random() * 30);
-      let temperatura = Math.floor(Math.random() * 30);
-      let co2 = Math.floor(Math.random() * 30);
+      let humedad = Math.max(30, Math.floor(Math.random() * 3) + 28); // Rango de 28 a 30
+      let temperatura = Math.max(20, Math.floor(Math.random() * 3) + 19); // Rango de 19 a 21
+      let co2 = Math.max(250, Math.floor(Math.random() * 3) + 248); // Rango de 248 a 250
+
+      // Lógica para incrementar o decrementar valores
+      humedad += Math.random() < 0.5 ? -1 : 1;
+      temperatura += Math.random() < 0.5 ? -1 : 1;
+      co2 += Math.random() < 0.5 ? -1 : 1;
+
       axios
         .put(`https://citysensor.glitch.me/sensor/${id}`, {
           name: "demostracion palermo",
@@ -45,17 +51,17 @@ const main = () => {
         .then((resp) => {
           console.log(resp.data);
         });
-    })
+    });
   } catch (error) {
     console.error(error);
   }
 };
 
-let tiempo = 1000 * 60 * 15
+let tiempo = 1000 * 60 * 15;
 
-tiempo = 1000 * 30
+tiempo = 1000 * 30;
 
 main();
 setInterval(() => {
-  main()
+  main();
 }, tiempo);
