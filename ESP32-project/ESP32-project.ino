@@ -6,7 +6,7 @@
 // instalar dht sensor library y arduinoJSON para correr el programa
 // para usar la tarjeta esp32 poner en preferencias este link: https://dl.espressif.com/dl/package_esp32_index.json, http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
-#define DHTPIN 23
+#define DHTPIN 13
 #define DHTTYPE DHT11
 
 // Aca va el nombre del sensor
@@ -14,9 +14,9 @@ char* nombre = "Et 36";
 
 DHT dht(DHTPIN, DHTTYPE);
 
-const String ipServer = "192.168.2.30" ; //cambiar
+const String ipServer = "192.168.0.112" ; //cambiar
 
-const char* ssid = "BA Escuela"; //cambiar
+const char* ssid = "facu"; //cambiar
 const char* password =  "";
 
 float coords[2] = {-34.5599051,-58.4941941};

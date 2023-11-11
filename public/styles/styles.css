@@ -272,6 +272,32 @@
   flex-direction: column;
 }
 
+.volverArriba {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  font-size: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+  box-shadow: 10px 10px 17px 1px rgba(0, 0, 0, 0.11);
+  -webkit-box-shadow: 10px 10px 17px 1px rgba(0, 0, 0, 0.11);
+  -moz-box-shadow: 10px 10px 17px 1px rgba(0, 0, 0, 0.11);
+  background-color: #005600;
+  margin: 20px;
+  transition: 0.3s ease background-color;
+  z-index: 50;
+}
+
+.volverArriba:hover {
+  background-color: #01420a;
+}
+
+.carcasa {
+  position: relative;
+}
+
 .hidden {
   display: none !important;
 }
@@ -467,15 +493,19 @@
   }
 }
 @media (max-width: 950px) {
+  .containerCheckBox {
+    display: none;
+  }
+  .volverArriba {
+    padding: 10px;
+    background-color: #097c09;
+  }
   .header h1 {
     font-size: 30px;
   }
   .header .quienes_somos {
     font-size: 15px;
     position: relative;
-  }
-  .header .containerCheckBox {
-    display: none;
   }
   .mapInfo {
     height: 190vh !important;

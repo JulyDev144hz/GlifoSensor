@@ -5,7 +5,7 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 const monkeyUrl = new URL('/public/porongota.glb', import.meta.url);
 
 const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth -7, window.innerHeight-20);
+renderer.setSize(window.innerWidth-7, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // Configura el color de fondo
@@ -97,4 +97,18 @@ window.addEventListener('resize', function() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+
+var botonVolverArriba = document.querySelector('.volverArriba');
+
+window.addEventListener('scroll', function () {
+    // Verifica la posición del scroll (scrollY)
+    if (window.scrollY > 500) {
+        // Si la posición es mayor a 500px, muestra el botón
+        botonVolverArriba.style.display = 'block';
+    } else {
+        // De lo contrario, oculta el botón
+        botonVolverArriba.style.display = 'none';
+    }
 });
