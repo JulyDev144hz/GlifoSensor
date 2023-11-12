@@ -1,10 +1,12 @@
-
-// definimos el mapa y lo centramos en CABA 
+// definimos el mapa y lo centramos en CABA
 var map = L.map("map", {
   center: [-34.6140305, -58.4517207],
   zoom: 12,
   gestureHandling: true,
 });
+
+let barrioSeleccionado;
+
 // seleccionamos el div donde va a estar el mapa y la informacion
 const todo = document.querySelector(".todo");
 const mapa = document.querySelector("#map");
@@ -52,13 +54,15 @@ const defaultcfg = {
   },
   options: {
     scales: {
-      yAxes: [{
+      yAxes: [
+        {
           ticks: {
-              fontSize: 10
-          }
-      }]
-  }
-}
+            fontSize: 10,
+          },
+        },
+      ],
+    },
+  },
 };
 let chartPromedio = new Chart(ctx, defaultcfg); //Grafico que muestra la contaminacion promedio de los sensores de un barrio
 // [0,1,2,3,4,5,6].map(e=>{
@@ -122,13 +126,13 @@ fetch("/public/barrios.json")
 // Crea una nueva promesa
 let loading = new Promise((resolve, reject) => {
   // Agrega un escucha al evento "load" de la ventana
-  window.addEventListener("load", e => {
+  window.addEventListener("load", (e) => {
     // Inicia un intervalo que llama a la función console.log() cada 100 milisegundos
     let intervalLoading = setInterval(() => {
-      console.log('cargando');
+      console.log("cargando");
       // Si la variable "barrios" tiene una longitud mayor que cero, significa que los barrios han sido cargados con éxito
       if (barrios.length > 0) {
-        resolve('Cargo');
+        resolve("Cargo");
         clearInterval(intervalLoading);
       }
     }, 100);
@@ -137,9 +141,9 @@ let loading = new Promise((resolve, reject) => {
 
 //carga la informacion referente a los barrios al clickear sobre cada uno
 let cargarBarrios = async () => {
-  let resp = await loading
-  console.log('Barrios cargados')
-  getSensors()
+  let resp = await loading;
+  console.log("Barrios cargados");
+  getSensors();
   barrios.forEach((barrio) => {
     barrio.polygon.addTo(map);
     barrio.polygon.on("click", (e) => {
@@ -158,7 +162,7 @@ let cargarBarrios = async () => {
           let reintentar = true;
           let puntosPromedios = [];
           let promedio = [];
-  
+
           while (reintentar) {
             if (historialOrdenado.length == 0) break;
             promedio = [];
@@ -166,7 +170,9 @@ let cargarBarrios = async () => {
             historialOrdenado.map((dato) => {
               if (
                 DentroDeXMinutos(
-                  Date.parse(convertLocaleToDate(historialOrdenado[0].timeStamp)),
+                  Date.parse(
+                    convertLocaleToDate(historialOrdenado[0].timeStamp)
+                  ),
                   Date.parse(convertLocaleToDate(dato.timeStamp)),
                   15
                 )
@@ -177,7 +183,7 @@ let cargarBarrios = async () => {
                 reintentar = true;
               }
             });
-  
+
             historialOrdenado = historialOrdenado.filter(
               (el) => !promedio.includes(el)
             );
@@ -213,12 +219,10 @@ let cargarBarrios = async () => {
               });
             });
             try {
-              chartPromedio.config.data.datasets[0].data = []
-              chartPromedio.config.data.datasets[1].data = []
-              chartPromedio.config.data.datasets[2].data = []
-            } catch (error) {
-              
-            }
+              chartPromedio.config.data.datasets[0].data = [];
+              chartPromedio.config.data.datasets[1].data = [];
+              chartPromedio.config.data.datasets[2].data = [];
+            } catch (error) {}
             promedios.map((punto, index) => {
               chartPromedio.config.data.datasets[0].data.push({
                 x: punto.timeStamp,
@@ -233,15 +237,17 @@ let cargarBarrios = async () => {
                 y: punto.temperatura,
               });
             });
-          
+
             // Limitar a los últimos 10 registros
             if (promedios.length > 10) {
-              chartPromedio.config.data.datasets[0].data = chartPromedio.config.data.datasets[0].data.slice(-10);
-              chartPromedio.config.data.datasets[1].data = chartPromedio.config.data.datasets[1].data.slice(-10);
-              chartPromedio.config.data.datasets[2].data = chartPromedio.config.data.datasets[2].data.slice(-10);
+              chartPromedio.config.data.datasets[0].data =
+                chartPromedio.config.data.datasets[0].data.slice(-10);
+              chartPromedio.config.data.datasets[1].data =
+                chartPromedio.config.data.datasets[1].data.slice(-10);
+              chartPromedio.config.data.datasets[2].data =
+                chartPromedio.config.data.datasets[2].data.slice(-10);
             }
             chartPromedio.update();
-          
           }
         } else if (barrio.historialSensores.length == 1) {
           $("#ChartPromedio").addClass("hidden");
@@ -289,8 +295,8 @@ let cargarBarrios = async () => {
           config.data.datasets[0].data,
             config.data.datasets[1].data,
             (config.data.datasets[2].data = []);
-          temperaturas = []
-          max = 0
+          temperaturas = [];
+          max = 0;
           //muestra los graficos temporales
           fetch("/historySensor/" + id)
             .then((data) => data.json())
@@ -309,15 +315,15 @@ let cargarBarrios = async () => {
                   y: sensor.temperatura,
                 };
               });
-   
+
               let chart = new Chart(
                 document.getElementById("chartSensor" + (indx + 1)),
                 config
               );
-  
+
               chartSensors.push({ chart: chart, id: id });
               chart.update();
-  
+
               if (json.length < 2) {
                 $("#chartSensor" + (indx + 1)).addClass("hidden");
                 $("#chartError" + (indx + 1)).removeClass("hidden");
@@ -335,29 +341,33 @@ let cargarBarrios = async () => {
     });
     //al pasar el mouse por arriba se ejecuta updateData()
     barrio.polygon.on("mouseover", (e) => {
-      try {
-        let sensoresOrdenados = barrio.historialSensores.sort((a, b) => {
-          return (
-            Date.parse(convertLocaleToDate(a.timeStamp)) -
-            Date.parse(convertLocaleToDate(b.timeStamp))
-          );
-        });
-        
-        updateData(
-          barrio.name,
-          sensoresOrdenados[sensoresOrdenados.length - 1].temperatura,
-          sensoresOrdenados[sensoresOrdenados.length - 1].humedad,
-          sensoresOrdenados[sensoresOrdenados.length - 1].co2,
-          sensoresOrdenados[sensoresOrdenados.length - 1].timeStamp
-        );
-      } catch (error) {
-        updateData(barrio.name, "?", "?", "?", "sin registro");
-      }
+      barrioSeleccionado = barrio;
+      updateBarrio(barrioSeleccionado);
     });
   });
 };
-cargarBarrios()
+const updateBarrio = (barrio) => {
+  try {
+    let sensoresOrdenados = barrio.historialSensores.sort((a, b) => {
+      return (
+        Date.parse(convertLocaleToDate(a.timeStamp)) -
+        Date.parse(convertLocaleToDate(b.timeStamp))
+      );
+    });
 
+    updateData(
+      barrio.name,
+      sensoresOrdenados[sensoresOrdenados.length - 1].temperatura,
+      sensoresOrdenados[sensoresOrdenados.length - 1].humedad,
+      sensoresOrdenados[sensoresOrdenados.length - 1].co2,
+      sensoresOrdenados[sensoresOrdenados.length - 1].timeStamp
+    );
+  } catch (error) {
+    updateData(barrio.name, "?", "?", "?", "sin registro");
+  }
+};
+
+cargarBarrios();
 
 //calcular tiempo
 const DentroDeXMinutos = (time1, time2, x) => {
@@ -372,12 +382,12 @@ const convertLocaleToDate = (time) => {
   time = time.join(" ");
   return time;
 };
-//obtener datos de sensores 
+//obtener datos de sensores
 const getSensors = async () => {
   try {
     let dataHistory = await fetch("/historySensor");
     let jsonHistory = await dataHistory.json();
- // Intenta obtener los datos de los sensores del historial
+    // Intenta obtener los datos de los sensores del historial
     chartSensors.map((sensorChart, index) => {
       sensorChart.chart.config.data.datasets[0].data = [];
       sensorChart.chart.config.data.datasets[1].data = [];
@@ -399,44 +409,52 @@ const getSensors = async () => {
             y: sensor.temperatura,
           };
         });
-         // Actualiza el gráfico
+      // Actualiza el gráfico
       sensorChart.chart.update();
     });
 
-// Obtiene los datos de los sensores del servidor
-let data = await fetch("/sensor");
+    // Obtiene los datos de los sensores del servidor
+    let data = await fetch("/sensor");
 
-// Convierte los datos a JSON
-let json = await data.json();
-json.forEach((s) => {
-  barrios.map((barr) => {
+    // Convierte los datos a JSON
+    let json = await data.json();
+    json.forEach((s) => {
+      barrios.map((barr) => {
+        try {
+          if(barr.name == barrioSeleccionado.name){
+              updateBarrio(barr)
+          }
+          
+        } catch (error) {
+          
+        }
 
-    // Verifica si el sensor está dentro del barrio
-    if (RayCasting(s.coords, barr.coords)) {
 
-      // Elimina el sensor de la lista de sensores del barrio
-      barr.sensores = barr.sensores.filter((e) => e._id != s._id);
+        // Verifica si el sensor está dentro del barrio
+        if (RayCasting(s.coords, barr.coords)) {
+          // Elimina el sensor de la lista de sensores del barrio
+          barr.sensores = barr.sensores.filter((e) => e._id != s._id);
 
-      // Elimina el sensor del historial de sensores del barrio
-      barr.historialSensores = barr.historialSensores.filter(
-        (x) => x.idSensor != s._id
-      );
-      // Agrega el sensor al historial de sensores del barrio
-      jsonHistory
-        .filter((x) => x.idSensor == s._id)
-        .map((dato) => {
-          barr.historialSensores.push(dato);
-        });
-      // Agrega el sensor a la lista de sensores del barrio
-      barr.sensores.push(s);
-    } else {
-      // Si el sensor estaba en el barrio, lo elimina
-      if (barr.sensores.find((e) => e._id == s._id) != undefined) {
-        barr.sensores = barr.sensores.filter((e) => e._id != s._id);
-      }
-    }
-  });
-});
+          // Elimina el sensor del historial de sensores del barrio
+          barr.historialSensores = barr.historialSensores.filter(
+            (x) => x.idSensor != s._id
+          );
+          // Agrega el sensor al historial de sensores del barrio
+          jsonHistory
+            .filter((x) => x.idSensor == s._id)
+            .map((dato) => {
+              barr.historialSensores.push(dato);
+            });
+          // Agrega el sensor a la lista de sensores del barrio
+          barr.sensores.push(s);
+        } else {
+          // Si el sensor estaba en el barrio, lo elimina
+          if (barr.sensores.find((e) => e._id == s._id) != undefined) {
+            barr.sensores = barr.sensores.filter((e) => e._id != s._id);
+          }
+        }
+      });
+    });
 
     //Esto es para cambiar el color de fondo de los barrios en virtud de la calidad del aire
     barrios.map((barrio) => {

@@ -38,11 +38,10 @@
   z-index: 5;
 }
 .header .quienes_somos {
-  display: block;
+  position: absolute;
   text-decoration: none;
   color: white;
   font-weight: bolder;
-  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -493,9 +492,6 @@
   }
 }
 @media (max-width: 950px) {
-  .containerCheckBox {
-    display: none;
-  }
   .volverArriba {
     padding: 10px;
     background-color: #097c09;
@@ -505,7 +501,7 @@
   }
   .header .quienes_somos {
     font-size: 15px;
-    position: relative;
+    width: 20vw;
   }
   .mapInfo {
     height: 190vh !important;
